@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -13,7 +13,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoChatViewController" customModule="Snorkler" customModuleProvider="target">
             <connections>
                 <outlet property="endButton" destination="KKn-KH-jrI" id="kri-kP-nYM"/>
-                <outlet property="monkeysLabel" destination="vKQ-Ms-zoi" id="mkk-SA-cft"/>
                 <outlet property="previewView" destination="KxG-Bo-od8" id="CQo-Hf-wtb"/>
                 <outlet property="publisherContainer" destination="U8v-GJ-WOl" id="GtZ-mu-Epu"/>
                 <outlet property="publisherLoadingIndicator" destination="fO3-bh-bTl" id="oh5-Jv-DTH"/>
@@ -45,12 +44,6 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🐵🙈🙉🙊" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vKQ-Ms-zoi">
-                            <rect key="frame" x="127.5" y="223.5" width="120" height="31.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KWR-Bj-Kj8">
                             <rect key="frame" x="301" y="10" width="64" height="30"/>
                             <constraints>
@@ -66,12 +59,10 @@
                     </subviews>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="vKQ-Ms-zoi" firstAttribute="centerX" secondItem="G9O-h9-Rt6" secondAttribute="centerX" id="4S6-W9-1ix"/>
                         <constraint firstItem="G9O-h9-Rt6" firstAttribute="leading" secondItem="LPs-zU-NdC" secondAttribute="leading" constant="20" id="4sd-y0-POJ"/>
                         <constraint firstItem="KxG-Bo-od8" firstAttribute="leading" secondItem="LPs-zU-NdC" secondAttribute="leading" id="8oZ-6w-o3Z"/>
                         <constraint firstItem="KxG-Bo-od8" firstAttribute="top" secondItem="LPs-zU-NdC" secondAttribute="top" id="A9P-Gd-Ltd"/>
                         <constraint firstItem="J6X-5N-tG3" firstAttribute="centerX" secondItem="LPs-zU-NdC" secondAttribute="centerX" id="CRa-Hn-2sn"/>
-                        <constraint firstItem="G9O-h9-Rt6" firstAttribute="top" secondItem="vKQ-Ms-zoi" secondAttribute="bottom" constant="8" id="JVX-sf-h6d"/>
                         <constraint firstAttribute="bottom" secondItem="KxG-Bo-od8" secondAttribute="bottom" id="NHZ-bR-Gqy"/>
                         <constraint firstAttribute="trailing" secondItem="KxG-Bo-od8" secondAttribute="trailing" id="Qby-U3-1s7"/>
                         <constraint firstItem="KWR-Bj-Kj8" firstAttribute="top" secondItem="LPs-zU-NdC" secondAttribute="top" constant="10" id="UEk-Yg-M1E"/>

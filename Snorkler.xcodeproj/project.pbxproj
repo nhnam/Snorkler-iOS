@@ -59,6 +59,7 @@
 		D87DA39D1ECEB5F200F82D2F /* SchoolPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = D87DA39C1ECEB5F200F82D2F /* SchoolPicker.xib */; };
 		D89FE53A1ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89FE5391ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift */; };
 		D89FE53C1ECF31F000A0FBAB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D89FE53B1ECF31F000A0FBAB /* GoogleService-Info.plist */; };
+		D89FE5411ECF704300A0FBAB /* RearMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89FE5401ECF704300A0FBAB /* RearMenuViewController.swift */; };
 		D8B0BDD71EC567F5006425A4 /* VideoChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B0BDD51EC567F5006425A4 /* VideoChatViewController.swift */; };
 		D8B0BDD81EC567F5006425A4 /* VideoChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B0BDD61EC567F5006425A4 /* VideoChatViewController.xib */; };
 		D8B0BDDA1EC56D42006425A4 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B0BDD91EC56D42006425A4 /* UserProfileViewController.swift */; };
@@ -132,6 +133,7 @@
 		D87DA39C1ECEB5F200F82D2F /* SchoolPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchoolPicker.xib; sourceTree = "<group>"; };
 		D89FE5391ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		D89FE53B1ECF31F000A0FBAB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D89FE5401ECF704300A0FBAB /* RearMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RearMenuViewController.swift; sourceTree = "<group>"; };
 		D8B0BDD51EC567F5006425A4 /* VideoChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoChatViewController.swift; sourceTree = "<group>"; };
 		D8B0BDD61EC567F5006425A4 /* VideoChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoChatViewController.xib; sourceTree = "<group>"; };
 		D8B0BDD91EC56D42006425A4 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				D80C17861ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift */,
 				D87DA3981ECEACD700F82D2F /* UIViewController+Ext.swift */,
 				D89FE5391ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift */,
+				D89FE5401ECF704300A0FBAB /* RearMenuViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 				D87B09D91EC470F40037D279 /* MenuController.swift in Sources */,
 				D87B09DB1EC470F40037D279 /* AnnotationView.swift in Sources */,
 				D80C17871ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift in Sources */,
+				D89FE5411ECF704300A0FBAB /* RearMenuViewController.swift in Sources */,
 				D87B09DA1EC470F40037D279 /* ViewController.swift in Sources */,
 				D87B09D81EC470F40037D279 /* SWRevealViewController.m in Sources */,
 				D86C4AE91ECBFFF700CEBFDB /* DBHelper.swift in Sources */,

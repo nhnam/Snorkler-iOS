@@ -11,6 +11,15 @@ import SwiftLocation
 
 extension UIImageView{
     func blurImage() {
+        if AppSession.shared.backgroundImage != nil {
+            let blurImageView = UIImageView(frame: self.frame)
+            blurImageView.image = AppSession.shared.backgroundImage
+            blurImageView.sizeToFit()
+            blurImageView.contentMode = .scaleAspectFit
+            blurImageView.center = self.center
+            self.addSubview(blurImageView)
+            return
+        }
         let layer = self.layer
         UIGraphicsBeginImageContext(self.frame.size)
         layer.render(in: UIGraphicsGetCurrentContext()!)
@@ -38,11 +47,16 @@ extension UIImageView{
         
         let finalImage = UIImage(cgImage: cgImage!)
         
+        if AppSession.shared.backgroundImage == nil {
+           AppSession.shared.backgroundImage = finalImage
+        }
+        
         let blurImageView = UIImageView(frame: self.frame)
         blurImageView.image = finalImage
         blurImageView.sizeToFit()
         blurImageView.contentMode = .scaleAspectFit
         blurImageView.center = self.center
+        
         self.addSubview(blurImageView)
     }
 }
@@ -53,15 +67,23 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.revealViewController() != nil {
+            menuButton.target = self.revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        }
         guard let userinfo = AppSession.shared.userInfo else { return }
         nameLabel.text = userinfo.firstname + " " + userinfo.lastname
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.locationLabel.text = AppSession.shared.currentLocation ?? "Not found"
         loadLocation()
         guard let image = AppSession.shared.avatarImage else { return }
@@ -70,10 +92,6 @@ class UserProfileViewController: UIViewController {
         backgroundImage.blurImage()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     private func loadLocation() {
         Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) in

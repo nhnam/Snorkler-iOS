@@ -22,8 +22,6 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var subscriberLoadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var publisherLoadingIndicator: UIActivityIndicatorView!
-    
-    @IBOutlet weak var monkeysLabel: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var endButton: UIButton!
@@ -74,8 +72,6 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             $0?.layer.borderWidth = 1.5;
             $0?.layer.cornerRadius = ($0?.frame.size.height ?? 50)/2;}
         [subscriberContainer, publisherContainer].forEach {
-//            $0?.layer.borderColor = UIColor.white.cgColor
-//            $0?.layer.borderWidth = 1.5;
             $0?.layer.cornerRadius = 5.0;}
         
         if #available(iOS 10.0, *) {
@@ -103,7 +99,6 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     @available(iOS 10.0, *)
     func setupCameraSession() {
-//        let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) as AVCaptureDevice
         let captureDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInWideAngleCamera, mediaType: AVMediaTypeVideo, position: .front) as AVCaptureDevice
         do {
 

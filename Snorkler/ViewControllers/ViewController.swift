@@ -17,7 +17,9 @@ class ViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDeleg
     var addresses:[String]!
     var phones:[String]!
     let locationManager = CLLocationManager() // location permission
+    
     @IBOutlet var menuButton:UIBarButtonItem!
+    
     func callPhoneNumber(sender: UIButton)
     {
         let v = sender.superview as! CustomCalloutView

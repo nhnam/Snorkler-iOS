@@ -1,0 +1,6 @@
+framework module Pods_Snorkler {
+  umbrella header "Pods-Snorkler-umbrella.h"
+
+  export *
+  module * { export * }
+}

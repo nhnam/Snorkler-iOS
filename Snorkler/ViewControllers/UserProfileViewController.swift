@@ -9,8 +9,48 @@
 import UIKit
 import SwiftLocation
 
+extension UIImageView{
+    func blurImage() {
+        let layer = self.layer
+        UIGraphicsBeginImageContext(self.frame.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        UIGraphicsEndImageContext()
+        
+        let blurRadius = 5
+        let ciimage: CIImage = CIImage(image: self.image!)!
+        
+        // Added "CIAffineClamp" filter
+        let affineClampFilter = CIFilter(name: "CIAffineClamp")!
+        affineClampFilter.setDefaults()
+        affineClampFilter.setValue(ciimage, forKey: kCIInputImageKey)
+        let resultClamp = affineClampFilter.value(forKey: kCIOutputImageKey)
+        
+        // resultClamp is used as input for "CIGaussianBlur" filter
+        let filter: CIFilter = CIFilter(name:"CIGaussianBlur")!
+        filter.setDefaults()
+        filter.setValue(resultClamp, forKey: kCIInputImageKey)
+        filter.setValue(blurRadius, forKey: kCIInputRadiusKey)
+        
+        
+        let ciContext = CIContext(options: nil)
+        let result = filter.value(forKey: kCIOutputImageKey) as! CIImage!
+        let cgImage = ciContext.createCGImage(result!, from: ciimage.extent) // changed to ciiimage.extend
+        
+        let finalImage = UIImage(cgImage: cgImage!)
+        
+        let blurImageView = UIImageView(frame: self.frame)
+        blurImageView.image = finalImage
+        blurImageView.sizeToFit()
+        blurImageView.contentMode = .scaleAspectFit
+        blurImageView.center = self.center
+        self.addSubview(blurImageView)
+    }
+}
+
 class UserProfileViewController: UIViewController {
 
+    @IBOutlet weak var avatarImage: UIImageView!
+    @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     
@@ -24,6 +64,10 @@ class UserProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         self.locationLabel.text = AppSession.shared.currentLocation ?? "Not found"
         loadLocation()
+        guard let image = AppSession.shared.avatarImage else { return }
+        avatarImage.image = image
+        backgroundImage.image = image
+        backgroundImage.blurImage()
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,7 +77,6 @@ class UserProfileViewController: UIViewController {
     
     private func loadLocation() {
         Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) in
-            print("A new update of location is available: \(location)")
             Location.getPlacemark(forLocation: location, success: { placemarks in
                 if let place = placemarks.first {
                     guard let formatedAdrressArray:[String] = place.addressDictionary?["FormattedAddressLines"] as? [String] else { return }

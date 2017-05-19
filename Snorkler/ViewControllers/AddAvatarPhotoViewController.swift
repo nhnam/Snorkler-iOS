@@ -16,6 +16,17 @@ class AddAvatarPhotoViewController: UIViewController, ImagePickerDelegate {
     @IBOutlet weak var avatarContainerView: UIView!
     @IBOutlet weak var captureButton: UIButton!
     @IBOutlet weak var retakeButton: UIButton!
+    @IBOutlet weak var sliderView: UIView!
+    private var percent:Double = 0.0 {
+        didSet {
+//            DispatchQueue.main.async {
+//                print("\(self.percent)")
+//                let size = self.previewImageView.frame.size
+//                let dx = size.width - CGFloat((1.0-self.percent))*size.width
+//                self.sliderView.frame = self.sliderView.frame.offsetBy(dx: dx, dy: 0)
+//            }
+        }
+    }
     
     private var imageToUpload:UIImage? {
         didSet {
@@ -32,6 +43,8 @@ class AddAvatarPhotoViewController: UIViewController, ImagePickerDelegate {
         retakeButton.layer.backgroundColor = UIColor.white.cgColor
         retakeButton.layer.borderWidth = 1.5
         retakeButton.isHidden = true
+        previewImageView.clipsToBounds = true
+        sliderView.isHidden = true
     }
     
     @IBAction func finishButtonDidTouch(_ sender: Any) {
@@ -48,7 +61,13 @@ class AddAvatarPhotoViewController: UIViewController, ImagePickerDelegate {
         showLoading()
         guard let imageData = UIImageJPEGRepresentation(imageToUpload!, 1.0) else { return }
         guard let member_id = AppSession.shared.userInfo?.memberId else { return }
-        ApiHelper.updateProfilePicture(params: ["member_id": member_id], imageData: imageData, onsuccess: { (json) in
+//        sliderView.isHidden = false
+//        sliderView.translatesAutoresizingMaskIntoConstraints = true
+//        percent = 0.0
+        AppSession.shared.avatarImage = imageToUpload
+        ApiHelper.updateProfilePicture(params: ["member_id": member_id], imageData: imageData,uploadProgress:{ finishedPercent in
+            self.percent = finishedPercent
+        }, onsuccess: { (json) in
             self.hideLoading()
             onUpdateSuccess()
         }, onfailure: { errMsg in

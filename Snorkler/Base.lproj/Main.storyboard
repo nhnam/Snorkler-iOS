@@ -1011,12 +1011,22 @@
                                             <action selector="captureDidTouch:" destination="T94-lj-XGs" eventType="touchUpInside" id="A4o-en-Vs0"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1RK-vY-kAi">
+                                        <rect key="frame" x="0.0" y="250" width="255" height="5"/>
+                                        <color key="backgroundColor" red="0.1019607843" green="0.58431372550000005" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="5" id="Aef-pE-7tn"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="am0-cv-bEb" secondAttribute="bottom" constant="20" id="0Dg-qf-JWX"/>
+                                    <constraint firstAttribute="bottom" secondItem="1RK-vY-kAi" secondAttribute="bottom" id="18d-7a-pU7"/>
                                     <constraint firstItem="am0-cv-bEb" firstAttribute="centerX" secondItem="Kg9-sy-IYy" secondAttribute="centerX" id="8ko-y0-q6F"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="255" id="f9E-0Y-0dd"/>
+                                    <constraint firstAttribute="trailing" secondItem="1RK-vY-kAi" secondAttribute="trailing" id="lUN-bT-zag"/>
+                                    <constraint firstItem="1RK-vY-kAi" firstAttribute="leading" secondItem="Kg9-sy-IYy" secondAttribute="leading" id="ptc-ct-tJg"/>
                                     <constraint firstAttribute="width" secondItem="Kg9-sy-IYy" secondAttribute="height" multiplier="1:1" id="rqX-iO-THq"/>
                                 </constraints>
                             </view>
@@ -1081,6 +1091,7 @@
                         <outlet property="captureButton" destination="am0-cv-bEb" id="Q7O-n9-PvM"/>
                         <outlet property="previewImageView" destination="2K6-kk-sEo" id="3EC-3C-ddB"/>
                         <outlet property="retakeButton" destination="nmf-wY-JOF" id="LXC-fG-K6p"/>
+                        <outlet property="sliderView" destination="1RK-vY-kAi" id="niL-x0-cVV"/>
                         <segue destination="Bdf-5N-mmb" kind="show" identifier="toUserExplorer" id="rqB-U7-h3r"/>
                     </connections>
                 </viewController>
@@ -1286,6 +1297,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="0xd-cy-rKJ"/>
                     <connections>
+                        <outlet property="avatarImage" destination="DEe-An-9l5" id="Sj1-YE-HQl"/>
+                        <outlet property="backgroundImage" destination="TIM-j1-eOM" id="WB7-Di-I3P"/>
                         <outlet property="locationLabel" destination="4OK-cB-exz" id="qou-Rt-3mI"/>
                         <outlet property="nameLabel" destination="dmL-iE-EIh" id="BSX-uB-ZET"/>
                         <segue destination="rer-TV-wEx" kind="presentation" id="e8r-KB-gK7"/>

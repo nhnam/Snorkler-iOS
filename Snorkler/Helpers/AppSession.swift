@@ -25,4 +25,5 @@ class AppSession: Any {
     
     var userInfo:UserInfo?
     var currentLocation:String?
+    var avatarImage:UIImage?
 }

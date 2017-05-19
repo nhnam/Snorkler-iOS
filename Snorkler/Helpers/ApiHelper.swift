@@ -171,7 +171,7 @@ class ApiHelper: Any {
         }
     }
     
-    class func updateProfilePicture(params aParams:[String:Any], imageData data:Data, onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func updateProfilePicture(params aParams:[String:Any], imageData data:Data,uploadProgress progress:@escaping (Double)->(), onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
         let (valid, errMsg) = validateParam(aParams, forApiType: .updateDP)
         if !valid {
             fail(errMsg);
@@ -187,7 +187,7 @@ class ApiHelper: Any {
             switch result {
             case .success(let upload, _, _):
                 upload.uploadProgress(closure: { (Progress) in
-                    print("Upload Progress: \(Progress.fractionCompleted)")
+                    progress(Progress.fractionCompleted)
                 })
                 upload.responseJSON { response in
                     resultClasssify(with: response, forType: .updateDP, onsuccess: success, onfailure: fail)

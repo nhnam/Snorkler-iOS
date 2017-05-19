@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "805554913947F67C57285DC35117E542"
+               BlueprintIdentifier = "4BE984707903CA43E4FA81E63AB1D09E"
                BuildableName = "UIImage_Color.framework"
                BlueprintName = "UIImage-Color"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "805554913947F67C57285DC35117E542"
+            BlueprintIdentifier = "4BE984707903CA43E4FA81E63AB1D09E"
             BuildableName = "UIImage_Color.framework"
             BlueprintName = "UIImage-Color"
             ReferencedContainer = "container:Pods.xcodeproj">

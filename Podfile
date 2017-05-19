@@ -22,5 +22,8 @@ target 'Snorkler' do
   pod 'SwiftDate', '~> 4.0'
   pod 'IJProgressView',:git => 'https://github.com/Isuru-Nanayakkara/IJProgressView.git'
   pod 'ImagePicker'
-
+  pod 'Firebase/Core'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
 end

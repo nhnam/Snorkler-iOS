@@ -19,8 +19,9 @@ class AddAvatarPhotoViewController: UIViewController, ImagePickerDelegate {
     @IBOutlet weak var sliderView: UIView!
     private var percent:Double = 0.0 {
         didSet {
+            print("\(self.percent)")
 //            DispatchQueue.main.async {
-//                print("\(self.percent)")
+//
 //                let size = self.previewImageView.frame.size
 //                let dx = size.width - CGFloat((1.0-self.percent))*size.width
 //                self.sliderView.frame = self.sliderView.frame.offsetBy(dx: dx, dy: 0)

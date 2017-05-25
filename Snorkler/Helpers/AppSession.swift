@@ -13,6 +13,7 @@ struct UserInfo {
     var lastname:String
     var token:String
     var memberId:String
+    var email:String
 }
 
 class AppSession: Any {

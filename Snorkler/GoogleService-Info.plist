@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>10785913897-k41sho3buknleholivoa9trj49g10cpm.apps.googleusercontent.com</string>
+	<string>831605012870-lfllieohhcc6cus60qbkhail426geps2.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.10785913897-k41sho3buknleholivoa9trj49g10cpm</string>
+	<string>com.googleusercontent.apps.831605012870-lfllieohhcc6cus60qbkhail426geps2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAXPoxb20EDvaJvKuW3XvfrtxQI-cqXc_s</string>
+	<string>AIzaSyBt8ENJ_SI_X-pjQAyxCIcmVoiZagS1cwA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>10785913897</string>
+	<string>831605012870</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.partnerpeople.snorkler</string>
 	<key>PROJECT_ID</key>
-	<string>snorkler-7a36f</string>
+	<string>face2facechat-9d751</string>
 	<key>STORAGE_BUCKET</key>
-	<string>snorkler-7a36f.appspot.com</string>
+	<string>face2facechat-9d751.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:10785913897:ios:99e9a35d4e2f4f47</string>
+	<string>1:831605012870:ios:99e9a35d4e2f4f47</string>
 	<key>DATABASE_URL</key>
-	<string>https://snorkler-7a36f.firebaseio.com</string>
+	<string>https://face2facechat-9d751.firebaseio.com</string>
 </dict>
 </plist>

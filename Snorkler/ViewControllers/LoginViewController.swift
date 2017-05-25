@@ -60,7 +60,7 @@ class LoginViewController: UIViewController {
         func onLogInSuccess() {
             //toAddInterests
             //toUserExplorer
-            self.performSegue(withIdentifier: "toAddInterests", sender: self)
+            self.performSegue(withIdentifier: "toUserExplorer", sender: self)
         }
         
         showLoading()
@@ -71,7 +71,8 @@ class LoginViewController: UIViewController {
             AppSession.shared.userInfo = UserInfo(firstname: json["data"]["firstname"].string ?? "",
                                                   lastname: json["data"]["lastname"].string ?? "",
                                                   token: "",
-                                                  memberId: json["data"]["member_id"].string ?? "")
+                                                  memberId: json["data"]["member_id"].string ?? "",
+                                                  email: json["data"]["email"].string ?? self?.emailField.text ?? "")
             
             if( AppSession.shared.userInfo?.memberId != nil && AppSession.shared.userInfo?.memberId != "") {
                 onLogInSuccess()

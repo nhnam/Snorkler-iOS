@@ -16,6 +16,17 @@
 		D80C17871ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17861ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift */; };
 		D80C17891ECB4197007FFB50 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17881ECB4197007FFB50 /* TagView.swift */; };
 		D82C97471EC623340044C281 /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C97461EC623340044C281 /* AppSession.swift */; };
+		D85408DC1ED67BDE00900FB7 /* ChatHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408DB1ED67BDE00900FB7 /* ChatHelper.swift */; };
+		D85408DF1ED67C3400900FB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408DE1ED67C3400900FB7 /* User.swift */; };
+		D85408E11ED67D0900900FB7 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408E01ED67D0900900FB7 /* Message.swift */; };
+		D85408E31ED67DB500900FB7 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408E21ED67DB500900FB7 /* Conversation.swift */; };
+		D85408E51ED67EDA00900FB7 /* SenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408E41ED67EDA00900FB7 /* SenderCell.swift */; };
+		D85408E71ED67EEF00900FB7 /* ReceiverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408E61ED67EEF00900FB7 /* ReceiverCell.swift */; };
+		D85408E91ED67F1F00900FB7 /* ConversationsTBCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408E81ED67F1F00900FB7 /* ConversationsTBCell.swift */; };
+		D85408EB1ED67F4900900FB7 /* ContactsCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408EA1ED67F4900900FB7 /* ContactsCVCell.swift */; };
+		D85408ED1ED6813500900FB7 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408EC1ED6813500900FB7 /* ChatViewController.swift */; };
+		D85408EF1ED682BF00900FB7 /* ConversationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408EE1ED682BF00900FB7 /* ConversationsViewController.swift */; };
+		D85408F11ED6896C00900FB7 /* newMessage.wav in Resources */ = {isa = PBXBuildFile; fileRef = D85408F01ED6896C00900FB7 /* newMessage.wav */; };
 		D86C4AE91ECBFFF700CEBFDB /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86C4AE81ECBFFF700CEBFDB /* DBHelper.swift */; };
 		D87B09BF1EC470F40037D279 /* Icon-167.png in Resources */ = {isa = PBXBuildFile; fileRef = D87B099A1EC470F40037D279 /* Icon-167.png */; };
 		D87B09C01EC470F40037D279 /* Icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = D87B099B1EC470F40037D279 /* Icon-60.png */; };
@@ -89,6 +100,17 @@
 		D80C17861ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAvatarPhotoViewController.swift; sourceTree = "<group>"; };
 		D80C17881ECB4197007FFB50 /* TagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		D82C97461EC623340044C281 /* AppSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
+		D85408DB1ED67BDE00900FB7 /* ChatHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatHelper.swift; sourceTree = "<group>"; };
+		D85408DE1ED67C3400900FB7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D85408E01ED67D0900900FB7 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		D85408E21ED67DB500900FB7 /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
+		D85408E41ED67EDA00900FB7 /* SenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SenderCell.swift; sourceTree = "<group>"; };
+		D85408E61ED67EEF00900FB7 /* ReceiverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiverCell.swift; sourceTree = "<group>"; };
+		D85408E81ED67F1F00900FB7 /* ConversationsTBCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsTBCell.swift; sourceTree = "<group>"; };
+		D85408EA1ED67F4900900FB7 /* ContactsCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCVCell.swift; sourceTree = "<group>"; };
+		D85408EC1ED6813500900FB7 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		D85408EE1ED682BF00900FB7 /* ConversationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsViewController.swift; sourceTree = "<group>"; };
+		D85408F01ED6896C00900FB7 /* newMessage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = newMessage.wav; sourceTree = "<group>"; };
 		D86C4AE81ECBFFF700CEBFDB /* DBHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		D87B099A1EC470F40037D279 /* Icon-167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-167.png"; sourceTree = "<group>"; };
 		D87B099B1EC470F40037D279 /* Icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60.png"; sourceTree = "<group>"; };
@@ -200,6 +222,7 @@
 		C4EE41F81C90917E00B985AB /* Snorkler */ = {
 			isa = PBXGroup;
 			children = (
+				D85408DD1ED67C2900900FB7 /* Models */,
 				D87B09E61EC4B9A70037D279 /* Helpers */,
 				D87B09981EC470F40037D279 /* Resources */,
 				D87B09B31EC470F40037D279 /* ThirdLibraries */,
@@ -211,9 +234,20 @@
 				C4EE42001C90917E00B985AB /* Assets.xcassets */,
 				C4EE42021C90917E00B985AB /* LaunchScreen.storyboard */,
 				C4EE42051C90917E00B985AB /* Info.plist */,
+				D85408F01ED6896C00900FB7 /* newMessage.wav */,
 				D89FE53B1ECF31F000A0FBAB /* GoogleService-Info.plist */,
 			);
 			path = Snorkler;
+			sourceTree = "<group>";
+		};
+		D85408DD1ED67C2900900FB7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D85408DE1ED67C3400900FB7 /* User.swift */,
+				D85408E01ED67D0900900FB7 /* Message.swift */,
+				D85408E21ED67DB500900FB7 /* Conversation.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D87B09981EC470F40037D279 /* Resources */ = {
@@ -281,6 +315,8 @@
 				D87DA3981ECEACD700F82D2F /* UIViewController+Ext.swift */,
 				D89FE5391ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift */,
 				D89FE5401ECF704300A0FBAB /* RearMenuViewController.swift */,
+				D85408EE1ED682BF00900FB7 /* ConversationsViewController.swift */,
+				D85408EC1ED6813500900FB7 /* ChatViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -296,6 +332,10 @@
 				D80C17881ECB4197007FFB50 /* TagView.swift */,
 				D87DA39A1ECEB5EB00F82D2F /* SchoolPicker.swift */,
 				D87DA39C1ECEB5F200F82D2F /* SchoolPicker.xib */,
+				D85408E41ED67EDA00900FB7 /* SenderCell.swift */,
+				D85408E61ED67EEF00900FB7 /* ReceiverCell.swift */,
+				D85408E81ED67F1F00900FB7 /* ConversationsTBCell.swift */,
+				D85408EA1ED67F4900900FB7 /* ContactsCVCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -306,6 +346,7 @@
 				D87B09E71EC4B9C90037D279 /* ApiHelper.swift */,
 				D82C97461EC623340044C281 /* AppSession.swift */,
 				D86C4AE81ECBFFF700CEBFDB /* DBHelper.swift */,
+				D85408DB1ED67BDE00900FB7 /* ChatHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -380,6 +421,7 @@
 				D87DA39D1ECEB5F200F82D2F /* SchoolPicker.xib in Resources */,
 				D87B09CB1EC470F40037D279 /* Icon-Small-50@2x.png in Resources */,
 				D87B09CD1EC470F40037D279 /* Icon-Small@2x.png in Resources */,
+				D85408F11ED6896C00900FB7 /* newMessage.wav in Resources */,
 				D87B09D71EC470F40037D279 /* starbucks-icon.png in Resources */,
 				D87B09D41EC470F40037D279 /* snorklerUser-1.jpg in Resources */,
 				D87B09C91EC470F40037D279 /* Icon-Small-40@3x.png in Resources */,
@@ -466,23 +508,33 @@
 				D87B09E51EC4713F0037D279 /* LoginViewController.swift in Sources */,
 				D8B0BDDA1EC56D42006425A4 /* UserProfileViewController.swift in Sources */,
 				D89FE53A1ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift in Sources */,
+				D85408EB1ED67F4900900FB7 /* ContactsCVCell.swift in Sources */,
+				D85408E31ED67DB500900FB7 /* Conversation.swift in Sources */,
+				D85408DF1ED67C3400900FB7 /* User.swift in Sources */,
 				D87DA3991ECEACD700F82D2F /* UIViewController+Ext.swift in Sources */,
 				D80C17851ECAFD5B007FFB50 /* AddUniversityViewController.swift in Sources */,
 				D82C97471EC623340044C281 /* AppSession.swift in Sources */,
+				D85408EF1ED682BF00900FB7 /* ConversationsViewController.swift in Sources */,
+				D85408E91ED67F1F00900FB7 /* ConversationsTBCell.swift in Sources */,
 				D80C17831ECAF8B4007FFB50 /* AddInterestViewController.swift in Sources */,
 				D87DA39B1ECEB5EB00F82D2F /* SchoolPicker.swift in Sources */,
+				D85408E11ED67D0900900FB7 /* Message.swift in Sources */,
 				D87B09DC1EC470F40037D279 /* CustomCalloutView.swift in Sources */,
 				D87B09DF1EC470F40037D279 /* SnorklerUserAnnotation.swift in Sources */,
 				C4EE41FA1C90917E00B985AB /* AppDelegate.swift in Sources */,
 				D87B09E81EC4B9C90037D279 /* ApiHelper.swift in Sources */,
 				D87B09D91EC470F40037D279 /* MenuController.swift in Sources */,
+				D85408ED1ED6813500900FB7 /* ChatViewController.swift in Sources */,
 				D87B09DB1EC470F40037D279 /* AnnotationView.swift in Sources */,
 				D80C17871ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift in Sources */,
 				D89FE5411ECF704300A0FBAB /* RearMenuViewController.swift in Sources */,
 				D87B09DA1EC470F40037D279 /* ViewController.swift in Sources */,
 				D87B09D81EC470F40037D279 /* SWRevealViewController.m in Sources */,
+				D85408E71ED67EEF00900FB7 /* ReceiverCell.swift in Sources */,
 				D86C4AE91ECBFFF700CEBFDB /* DBHelper.swift in Sources */,
+				D85408DC1ED67BDE00900FB7 /* ChatHelper.swift in Sources */,
 				D8B0BDDC1EC5715A006425A4 /* RegisterViewController.swift in Sources */,
+				D85408E51ED67EDA00900FB7 /* SenderCell.swift in Sources */,
 				D8B0BDD71EC567F5006425A4 /* VideoChatViewController.swift in Sources */,
 				D87B09DE1EC470F40037D279 /* CustomGradientView.swift in Sources */,
 				D80C17891ECB4197007FFB50 /* TagView.swift in Sources */,

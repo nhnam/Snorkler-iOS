@@ -1,34 +1,35 @@
 PODS:
   - Alamofire (4.4.0)
   - Fakery (2.0.0)
-  - Firebase/Auth (3.17.0):
+  - Firebase/Auth (4.0.0):
     - Firebase/Core
-    - FirebaseAuth (= 3.1.1)
-  - Firebase/Core (3.17.0):
-    - FirebaseAnalytics (= 3.9.0)
-    - FirebaseCore (= 3.6.0)
-  - Firebase/Database (3.17.0):
+    - FirebaseAuth (= 4.0.0)
+  - Firebase/Core (4.0.0):
+    - FirebaseAnalytics (= 4.0.0)
+    - FirebaseCore (= 4.0.0)
+  - Firebase/Database (4.0.0):
     - Firebase/Core
-    - FirebaseDatabase (= 3.1.2)
-  - Firebase/Storage (3.17.0):
+    - FirebaseDatabase (= 4.0.0)
+  - Firebase/Storage (4.0.0):
     - Firebase/Core
-    - FirebaseStorage (= 1.1.0)
-  - FirebaseAnalytics (3.9.0):
-    - FirebaseCore (~> 3.6)
-    - FirebaseInstanceID (~> 1.0)
+    - FirebaseStorage (= 2.0.0)
+  - FirebaseAnalytics (4.0.0):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-  - FirebaseAuth (3.1.1):
-    - FirebaseAnalytics (~> 3.7)
+  - FirebaseAuth (4.0.0):
+    - FirebaseAnalytics (~> 4.0)
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (3.6.0):
+  - FirebaseCore (4.0.0):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-  - FirebaseDatabase (3.1.2):
-    - FirebaseAnalytics (~> 3.7)
-  - FirebaseInstanceID (1.0.10):
-    - FirebaseCore (~> 3.6)
-  - FirebaseStorage (1.1.0):
-    - FirebaseAnalytics (~> 3.7)
+  - FirebaseDatabase (4.0.0):
+    - FirebaseAnalytics (~> 4.0)
+  - FirebaseInstanceID (2.0.0):
+    - FirebaseCore (~> 4.0)
+  - FirebaseStorage (2.0.0):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - GoogleToolboxForMac/DebugUtils (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
@@ -41,10 +42,11 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GPUImage (0.1.7)
-  - GTMSessionFetcher/Core (1.1.9)
+  - GTMSessionFetcher/Core (1.1.10)
   - IJProgressView (0.1.0)
   - ImagePicker (2.1.1)
   - JCTagListView (1.0.2)
+  - KeyboardMan (1.1.0)
   - OpenTok (2.11.0)
   - Realm (2.7.0):
     - Realm/Headers (= 2.7.0)
@@ -72,6 +74,7 @@ DEPENDENCIES:
   - IJProgressView (from `https://github.com/Isuru-Nanayakkara/IJProgressView.git`)
   - ImagePicker
   - JCTagListView
+  - KeyboardMan
   - OpenTok (~> 2.11.0)
   - Realm
   - RealmSwift
@@ -97,19 +100,20 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   Fakery: 97b99c23937d2e025d9135c75e2b17351ccd5031
-  Firebase: 4b66b5b59c43edac745b87f0c87e42cdd0279c13
-  FirebaseAnalytics: e5fe8486efc01bec33f6bf82e2fa9fce4b124052
-  FirebaseAuth: cc8a1824170adbd351edb7f994490a3fb5c18be6
-  FirebaseCore: 9691ee2ade70c098d7cf92440f4303f16d83ca75
-  FirebaseDatabase: 05c96d7b43a7368dc91c07791adb49683e1738d1
-  FirebaseInstanceID: b9eedd6846fb5e1f0f7279e1deaa7a7e4cf8392e
-  FirebaseStorage: a5c55b23741a49a72af8f30f95b3bb5ddbeda12d
+  Firebase: 284eea779b73fdff309791817da7c68bff8dd572
+  FirebaseAnalytics: 6f08e746f7d66f5452931bc2e822b5df9c66b64a
+  FirebaseAuth: ebb6abcbabae00fc47446d690c19ce68d8484fde
+  FirebaseCore: 85ad466044c2f013cdb167f85d426d15b128114a
+  FirebaseDatabase: d829b3a8c3e2ac7a16773c5df226966b0805dfc2
+  FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
+  FirebaseStorage: 8110a1ed2034c8fbfd83890d2acc9cdbbd99afec
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
-  GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
+  GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
   IJProgressView: 24ba8bade65ca7d500fc5c74c8d48e5cf2f3f246
   ImagePicker: fe4c699abb56ff03994fa98d8b02e3883ee118be
   JCTagListView: 963c9f5a867e2416e28bcf056e32c572082d5446
+  KeyboardMan: 96e61167a0fb3a4e31662d41802a9dd920b6d097
   OpenTok: 329d04317e02cc018b8faf5851b921b87bd9562b
   Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
   RealmSwift: 6d06425d3900c86473c4f323bf6949b43fca22bc
@@ -123,6 +127,6 @@ SPEC CHECKSUMS:
   UIImage-Color: 29d79c2acdd1836eae9815836a14fddfcd2db38f
   Validator: b1793fbfd0046097551d0edd18e2c30792d69ef5
 
-PODFILE CHECKSUM: 54203101b200ab8af468ba1f9a4ee4611be837b1
+PODFILE CHECKSUM: e05852d3ec04ef91fbda32c8fd0f728c49a0ea23
 
 COCOAPODS: 1.2.1

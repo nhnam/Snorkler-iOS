@@ -66,9 +66,14 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     private var timer:Timer?
     private var count = 3;
     
+    private var myVideoUsername:String = AppSession.shared.userInfo?.email ?? "unknown"
+    
+    @IBOutlet weak var videoUsernameField: UITextField!
+    @IBOutlet weak var connectButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.getSessionCredentials()
+        
         [startButton, endButton].forEach {
             $0?.layer.borderColor = $0?.titleLabel?.textColor.cgColor
             $0?.layer.borderWidth = 1.5;
@@ -76,11 +81,14 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         [subscriberContainer, publisherContainer].forEach {
             $0?.layer.cornerRadius = 5.0;}
         
+        let marginField = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        videoUsernameField.leftViewMode = .always
+        videoUsernameField.leftView = marginField
+        
         if #available(iOS 10.0, *) {
             setupCameraSession()
-        } else {
-            // Fallback on earlier versions
         }
+        
         seekNext()
     }
     
@@ -90,6 +98,8 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         subRect = subscriberContainer.bounds
         subscriberLoadingIndicator.isHidden = true
         publisherLoadingIndicator.isHidden = true
+        videoUsernameField.text = myVideoUsername
+        getSessionCredentials(username: myVideoUsername)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -184,6 +194,24 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         }
     }
     
+    @IBAction func didTouchVideoUserConnectButton(_ sender: Any) {
+        
+        if let username = videoUsernameField.text {
+            // disconnect
+            pubLoading(false)
+            subLoading(false)
+            doDisconnect(escape: false)
+
+            getSessionCredentials(username: username, onReady: { [weak self] ready in
+                if ready {
+                    self?.pubLoading(true)
+                    self?.subLoading(true)
+                    self?.doConnect()
+                }
+            })
+        }
+    }
+    
     @IBAction func startButtonDidTouch(_ sender: Any) {
         pubLoading(true)
         subLoading(true)
@@ -191,14 +219,15 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     @IBAction func endButtonDidTouch(_ sender: Any) {
-        pubLoading(false)
-        subLoading(false)
-        doDisconnect(escape: false)
-        if (!cameraSession.isRunning ){
-            cameraSession.startRunning()
+        DispatchQueue(label: "EndStreaming").async {
+            DispatchQueue.main.async {
+                self.pubLoading(false)
+                self.subLoading(false)
+                self.doDisconnect(escape: false)
+                self.previewView.isHidden = false
+                self.seekNext()
+            }
         }
-        previewView.isHidden = false
-        seekNext()
     }
     
     @IBAction func closeDidTouch(_ sender: Any) {
@@ -211,19 +240,25 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         previewView.isHidden = true
     }
     
-    func getSessionCredentials() {
-      
-        Alamofire.request(server + "/session").responseJSON { response in
+    
+    private func getSessionCredentials(username akey:String, onReady ready: ((Bool)->())? = nil) {
+        showLoading()
+        Alamofire.request(server + "/session/" + akey).responseJSON { [unowned self] response in
+            self.hideLoading()
             print("\(String(describing: response.request))")
             print("Session: \(response.result)")
             if let error = response.error {
                 print("Get session fail: \(error.localizedDescription)")
+                print("RESPONSE:\n\(response)")
+                ready?(false)
+                return
             }
             if let JSON = response.result.value {
                 print("Session: \(JSON)")
                 guard let jsonDict:[String:Any] = JSON as? [String:Any] else { return }
                 self.Token = (jsonDict["token"] as? String) ?? ""
                 self.SessionID = (jsonDict["sessionId"] as? String) ?? ""
+                ready?(true)
             }
         }
     }

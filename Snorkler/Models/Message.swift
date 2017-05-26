@@ -19,44 +19,45 @@ class Message {
     var timestamp: Int
     var isRead: Bool
     var image: UIImage?
+    var name:String?
     private var toID: String?
     private var fromID: String?
     
     //MARK: Methods
-    class func downloadAllMessages(forUserID: String, completion: @escaping (Message) -> ()) {
-        if let currentUserID = Auth.auth().currentUser?.uid {
-            Database.database().reference().child("users").child(currentUserID).child("conversations").child(forUserID).observe(.value, with: { (snapshot) in
-                if snapshot.exists() {
-                    let data = snapshot.value as! [String: String]
-                    let location = data["location"]!
-                    Database.database().reference().child("conversations").child(location).observe(.childAdded, with: { (snap) in
-                        if snap.exists() {
-                            let receivedMessage = snap.value as! [String: Any]
-                            let messageType = receivedMessage["type"] as! String
-                            var type = MessageType.text
-                            switch messageType {
-                            case "photo":
-                                type = .photo
-                            case "location":
-                                type = .location
-                            default: break
-                            }
-                            let content = receivedMessage["content"] as! String
-                            let fromID = receivedMessage["fromID"] as! String
-                            let timestamp = receivedMessage["timestamp"] as! Int
-                            if fromID == currentUserID {
-                                let message = Message.init(type: type, content: content, owner: .receiver, timestamp: timestamp, isRead: true)
-                                completion(message)
-                            } else {
-                                let message = Message.init(type: type, content: content, owner: .sender, timestamp: timestamp, isRead: true)
-                                completion(message)
-                            }
-                        }
-                    })
-                }
-            })
-        }
-    }
+//    class func downloadAllMessages(forUserID: String, completion: @escaping (Message) -> ()) {
+//        if let currentUserID = Auth.auth().currentUser?.uid {
+//            Database.database().reference().child("users").child(currentUserID).child("conversations").child(forUserID).observe(.value, with: { (snapshot) in
+//                if snapshot.exists() {
+//                    let data = snapshot.value as! [String: String]
+//                    let location = data["location"]!
+//                    Database.database().reference().child("conversations").child(location).observe(.childAdded, with: { (snap) in
+//                        if snap.exists() {
+//                            let receivedMessage = snap.value as! [String: Any]
+//                            let messageType = receivedMessage["type"] as! String
+//                            var type = MessageType.text
+//                            switch messageType {
+//                            case "photo":
+//                                type = .photo
+//                            case "location":
+//                                type = .location
+//                            default: break
+//                            }
+//                            let content = receivedMessage["content"] as! String
+//                            let fromID = receivedMessage["fromID"] as! String
+//                            let timestamp = receivedMessage["timestamp"] as! Int
+//                            if fromID == currentUserID {
+//                                let message = Message.init(type: type, content: content, owner: .receiver, timestamp: timestamp, isRead: true)
+//                                completion(message)
+//                            } else {
+//                                let message = Message.init(type: type, content: content, owner: .sender, timestamp: timestamp, isRead: true)
+//                                completion(message)
+//                            }
+//                        }
+//                    })
+//                }
+//            })
+//        }
+//    }
     
     func downloadImage(indexpathRow: Int, completion: @escaping (Bool, Int) -> ())  {
         if self.type == .photo {
@@ -182,11 +183,12 @@ class Message {
     }
     
     //MARK: Inits
-    init(type: MessageType, content: Any, owner: MessageOwner, timestamp: Int, isRead: Bool) {
+    init(type: MessageType, content: Any, owner: MessageOwner, timestamp: Int, isRead: Bool, name aname:String?) {
         self.type = type
         self.content = content
         self.owner = owner
         self.timestamp = timestamp
         self.isRead = isRead
+        self.name = aname
     }
 }

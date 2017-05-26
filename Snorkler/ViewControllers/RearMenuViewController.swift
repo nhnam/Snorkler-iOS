@@ -63,6 +63,8 @@ class RearMenuViewController: UIViewController, UITableViewDelegate, UITableView
         guard let revealController = self.revealViewController() else { return }
         switch indexPath.row {
         case 0:
+            guard let navi_conversation = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "navi_video") as? UINavigationController else { return }
+            revealController.pushFrontViewController(navi_conversation, animated: true)
             break
         case 1:
             guard let navi_conversation = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "navi_conversation") as? UINavigationController else { return }

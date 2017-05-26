@@ -15,6 +15,7 @@
 		D80C17851ECAFD5B007FFB50 /* AddUniversityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17841ECAFD5B007FFB50 /* AddUniversityViewController.swift */; };
 		D80C17871ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17861ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift */; };
 		D80C17891ECB4197007FFB50 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17881ECB4197007FFB50 /* TagView.swift */; };
+		D822A0B11ED739F800CDD3C8 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D822A0B01ED739F800CDD3C8 /* Channel.swift */; };
 		D82C97471EC623340044C281 /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82C97461EC623340044C281 /* AppSession.swift */; };
 		D85408DC1ED67BDE00900FB7 /* ChatHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408DB1ED67BDE00900FB7 /* ChatHelper.swift */; };
 		D85408DF1ED67C3400900FB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85408DE1ED67C3400900FB7 /* User.swift */; };
@@ -99,6 +100,7 @@
 		D80C17841ECAFD5B007FFB50 /* AddUniversityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUniversityViewController.swift; sourceTree = "<group>"; };
 		D80C17861ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAvatarPhotoViewController.swift; sourceTree = "<group>"; };
 		D80C17881ECB4197007FFB50 /* TagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
+		D822A0B01ED739F800CDD3C8 /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		D82C97461EC623340044C281 /* AppSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
 		D85408DB1ED67BDE00900FB7 /* ChatHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatHelper.swift; sourceTree = "<group>"; };
 		D85408DE1ED67C3400900FB7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				D85408DE1ED67C3400900FB7 /* User.swift */,
 				D85408E01ED67D0900900FB7 /* Message.swift */,
 				D85408E21ED67DB500900FB7 /* Conversation.swift */,
+				D822A0B01ED739F800CDD3C8 /* Channel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 				D87B09DA1EC470F40037D279 /* ViewController.swift in Sources */,
 				D87B09D81EC470F40037D279 /* SWRevealViewController.m in Sources */,
 				D85408E71ED67EEF00900FB7 /* ReceiverCell.swift in Sources */,
+				D822A0B11ED739F800CDD3C8 /* Channel.swift in Sources */,
 				D86C4AE91ECBFFF700CEBFDB /* DBHelper.swift in Sources */,
 				D85408DC1ED67BDE00900FB7 /* ChatHelper.swift in Sources */,
 				D8B0BDDC1EC5715A006425A4 /* RegisterViewController.swift in Sources */,

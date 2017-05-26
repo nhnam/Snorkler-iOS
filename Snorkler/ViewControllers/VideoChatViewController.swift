@@ -12,8 +12,11 @@ import Alamofire
 import AVFoundation
 import GPUImage
 import Fakery
+import Firebase
 
 let server = "https://face2faceserver.herokuapp.com"
+//let server = "http://localhost:8000"
+
 let subscribeToSelf = false
 
 class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -30,7 +33,6 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     lazy var cameraSession: AVCaptureSession = {
         let s = AVCaptureSession()
         s.sessionPreset = AVCaptureSessionPresetPhoto
-        // s.sessionPreset = AVCaptureSessionPresetHigh
         return s
     }()
     
@@ -99,6 +101,9 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     @available(iOS 10.0, *)
     func setupCameraSession() {
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            return
+        #endif
         let captureDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInWideAngleCamera, mediaType: AVMediaTypeVideo, position: .front) as AVCaptureDevice
         do {
 
@@ -200,15 +205,22 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         pubLoading(false)
         subLoading(false)
         doDisconnect(escape: true)
-        cameraSession.stopRunning()
+        if (cameraSession.isRunning ){
+            cameraSession.stopRunning()
+        }
         previewView.isHidden = true
     }
     
     func getSessionCredentials() {
+      
         Alamofire.request(server + "/session").responseJSON { response in
-            print(response.result)
+            print("\(String(describing: response.request))")
+            print("Session: \(response.result)")
+            if let error = response.error {
+                print("Get session fail: \(error.localizedDescription)")
+            }
             if let JSON = response.result.value {
-                print("JSON: \(JSON)")
+                print("Session: \(JSON)")
                 guard let jsonDict:[String:Any] = JSON as? [String:Any] else { return }
                 self.Token = (jsonDict["token"] as? String) ?? ""
                 self.SessionID = (jsonDict["sessionId"] as? String) ?? ""

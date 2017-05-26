@@ -1427,7 +1427,7 @@
                         <barButtonItem key="rightBarButtonItem" image="compose" id="WgZ-cO-bnG">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="BWB-q2-In4" kind="show" identifier="menuToChatVC" id="oP0-iG-MQl"/>
+                                <action selector="didTouchOpenChat:" destination="IMY-Ua-ujf" id="3jq-eh-D67"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1471,23 +1471,35 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receiver message" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oiz-Tc-4U3">
-                                                    <rect key="frame" x="47" y="2" width="231" height="19.5"/>
+                                                    <rect key="frame" x="47" y="17" width="231" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.094117647060000004" green="0.43529411759999997" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eGV-U6-hPw">
+                                                    <rect key="frame" x="47" y="2" width="36" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="PFD-or-Ddq"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="eGV-U6-hPw" firstAttribute="leading" secondItem="pco-lY-3tg" secondAttribute="trailing" constant="1" id="5EK-e0-pjo"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Oiz-Tc-4U3" secondAttribute="trailing" constant="89" id="5KP-R2-HQH"/>
                                                 <constraint firstItem="pco-lY-3tg" firstAttribute="top" secondItem="RBu-7b-8EJ" secondAttribute="top" constant="2" id="Ke7-97-gFr"/>
                                                 <constraint firstItem="pco-lY-3tg" firstAttribute="leading" secondItem="RBu-7b-8EJ" secondAttribute="leading" constant="8" id="N9f-Yw-L0l"/>
-                                                <constraint firstItem="Oiz-Tc-4U3" firstAttribute="top" secondItem="pco-lY-3tg" secondAttribute="top" id="TEe-EP-lO7"/>
+                                                <constraint firstItem="Oiz-Tc-4U3" firstAttribute="top" secondItem="pco-lY-3tg" secondAttribute="top" constant="15" id="TEe-EP-lO7"/>
                                                 <constraint firstItem="Oiz-Tc-4U3" firstAttribute="leading" secondItem="pco-lY-3tg" secondAttribute="trailing" constant="1" id="VV3-GC-y8o"/>
+                                                <constraint firstItem="eGV-U6-hPw" firstAttribute="top" secondItem="pco-lY-3tg" secondAttribute="top" id="kGq-QK-UKT"/>
                                                 <constraint firstAttribute="bottom" secondItem="pco-lY-3tg" secondAttribute="bottom" constant="2" id="qVk-mo-e5S"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="message" destination="Oiz-Tc-4U3" id="H5X-gh-HZC"/>
+                                            <outlet property="name" destination="eGV-U6-hPw" id="hCF-tX-cCN"/>
                                             <outlet property="profilePic" destination="pco-lY-3tg" id="E1h-10-xLr"/>
                                         </connections>
                                     </tableViewCell>
@@ -1505,23 +1517,35 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender message" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXo-Ur-7Sk">
-                                                    <rect key="frame" x="97" y="2" width="229" height="19.5"/>
+                                                    <rect key="frame" x="97" y="17" width="229" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.2274509804" green="0.45882352939999999" blue="0.65490196079999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWa-I3-RMm">
+                                                    <rect key="frame" x="290" y="2" width="36" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="fEJ-CR-fBl"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="uXo-Ur-7Sk" firstAttribute="top" secondItem="O1V-Ok-Y1c" secondAttribute="top" id="2eF-ud-J3P"/>
+                                                <constraint firstItem="uXo-Ur-7Sk" firstAttribute="top" secondItem="O1V-Ok-Y1c" secondAttribute="top" constant="15" id="2eF-ud-J3P"/>
                                                 <constraint firstItem="uXo-Ur-7Sk" firstAttribute="leading" secondItem="KWQ-MT-4G7" secondAttribute="leadingMargin" constant="89" id="300-Wh-Cfq"/>
                                                 <constraint firstAttribute="bottom" secondItem="O1V-Ok-Y1c" secondAttribute="bottom" constant="2" id="A34-oi-H9Q"/>
+                                                <constraint firstItem="wWa-I3-RMm" firstAttribute="top" secondItem="O1V-Ok-Y1c" secondAttribute="top" id="Bf2-DD-IAL"/>
                                                 <constraint firstItem="O1V-Ok-Y1c" firstAttribute="top" secondItem="KWQ-MT-4G7" secondAttribute="top" constant="2" id="SSh-EY-VLe"/>
                                                 <constraint firstItem="O1V-Ok-Y1c" firstAttribute="leading" secondItem="uXo-Ur-7Sk" secondAttribute="trailing" constant="1.5" id="cu3-XB-QmD"/>
                                                 <constraint firstAttribute="trailing" secondItem="O1V-Ok-Y1c" secondAttribute="trailing" constant="8" id="d5d-96-tdz"/>
+                                                <constraint firstItem="O1V-Ok-Y1c" firstAttribute="leading" secondItem="wWa-I3-RMm" secondAttribute="trailing" constant="1.5" id="y9u-DF-DuQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="message" destination="uXo-Ur-7Sk" id="ycR-HY-QXo"/>
+                                            <outlet property="name" destination="wWa-I3-RMm" id="ySK-2s-dnT"/>
                                             <outlet property="profilePic" destination="O1V-Ok-Y1c" id="WUL-yX-BWy"/>
                                         </connections>
                                     </tableViewCell>
@@ -2175,6 +2199,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="Fqe-26-c8d"/>
         <segue reference="zlr-ZS-MC3"/>
-        <segue reference="yEk-zH-hCo"/>
     </inferredMetricsTieBreakers>
 </document>

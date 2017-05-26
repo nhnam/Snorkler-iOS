@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import KeyboardMan
+import AudioToolbox
 
 // vMv1nC3XrdgyLH6JLe9URpJ5Aja2 hienhien
 // 48gT22C0xmYA4iyRU1zTmGVtYgy1 hien1
@@ -22,28 +23,54 @@ class ChatViewController: UIViewController{
     @IBOutlet weak var tableMarginBottom: NSLayoutConstraint!
     let defaultBottomConstant: CGFloat = 53.0
     
+    private lazy var channelRef: DatabaseReference = Database.database().reference().child("channels")
+    private lazy var messageRef: DatabaseReference = self.channelRef.child("messages")
+    private var newMessageRefHandle: DatabaseHandle?
+    
     var messages:[Message] = []
     var currentUser: User? {
-        didSet{
-            print("User set:\(String(describing: currentUser?.email))")
-        }
+        didSet{ print("User set:\(String(describing: currentUser?.email))") }
     }
+    var senderId = Auth.auth().currentUser?.uid {
+        didSet { print("SenderId: \(String(describing: senderId))") }
+    }
+    var senderName = AppSession.shared.userInfo?.firstname
+    
     lazy var keyboardMan = {
         return KeyboardMan()
+    }()
+    
+    lazy var isObserveredMessages:Bool = {
+        self.observeMessages()
+        return true
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 40
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorStyle = .none
         inputField.delegate = self
+        self.title = AppSession.shared.currentRoom
+        
         if currentUser != nil {
             fetchData()
-        }else {
-            let userIdHien1 = "48gT22C0xmYA4iyRU1zTmGVtYgy1"
-            User.info(forUserID: userIdHien1, completion: { [weak self] (user:User) in
-                self?.currentUser = user
+        } else {
+            guard let email = AppSession.shared.userInfo?.email else { return }
+            Auth.auth().signIn(withEmail: email, password: "123456", completion: { (user, error) in
+                if let er = error {
+                    print("Signin Error: \(er.localizedDescription)")
+                    return
+                }
+                print ("Signed in chat as \(email)")
+                self.senderId = Auth.auth().currentUser?.uid
             })
+        }
+        _ = isObserveredMessages
+    }
+    
+    deinit {
+        if let refHandle = newMessageRefHandle {
+            messageRef.removeObserver(withHandle: refHandle)
         }
     }
     
@@ -65,20 +92,14 @@ class ChatViewController: UIViewController{
             self?.view.layoutIfNeeded()
         }
     }
+    
 
     func fetchData() {
         guard let userid = self.currentUser?.id else { return }
-        Message.downloadAllMessages(forUserID: userid, completion: {[unowned self] (message) in
-            self.messages.append(message)
-            self.messages.sort{ $0.timestamp < $1.timestamp }
-            DispatchQueue.main.async {
-                if !self.messages.isEmpty {
-                    self.tableView.reloadData()
-                    self.tableView.scrollToRow(at: IndexPath.init(row: self.messages.count - 1, section: 0), at: .bottom, animated: false)
-                }
-            }
-        })
-        
+//        Message.downloadAllMessages(forUserID: userid, completion: {[unowned self] (message) in
+//            // self.messages.append(message)
+//            self.finishReceivingMessage()
+//        })
         Message.markMessagesRead(forUserID: self.currentUser!.id)
     }
     
@@ -90,9 +111,18 @@ class ChatViewController: UIViewController{
     }
 
     func composeMessage(type: MessageType, content: Any)  {
-        guard let userid = self.currentUser?.id else { return }
-        let message = Message.init(type: type, content: content, owner: .sender, timestamp: Int(Date().timeIntervalSince1970), isRead: false)
+        guard let userid = senderId else { return }
+        let message = Message.init(type: type, content: content, owner: .sender, timestamp: Int(Date().timeIntervalSince1970), isRead: false, name: senderName)
         Message.send(message: message, toID: userid, completion: { (_) in })
+        
+        let itemRef = messageRef.childByAutoId()
+        let messageItem = [
+            "senderId": senderId!,
+            "senderName": senderName!,
+            "text": content,
+            ]
+        
+        itemRef.setValue(messageItem) // 3
     }
     
     @IBAction func didTouchSend(_ sender: Any) {
@@ -102,6 +132,46 @@ class ChatViewController: UIViewController{
                 inputField.text = ""
             }
         }
+    }
+    
+    func observeMessages() {
+        messageRef = channelRef.child("messages")
+        let messageQuery = messageRef.queryLimited(toLast:25)
+        newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+            guard let messageData = snapshot.value as? Dictionary<String, String> else { return }
+            print("New mess: \(messageData)")
+            if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
+                self.addMessage(withId: id, name: name, text: text)
+                self.finishReceivingMessage()
+            } else {
+                print("Error! Could not decode message data")
+            }
+        })
+    }
+    
+    private func addMessage(withId userId:String, name senderName:String, text content: String) {
+        let message = Message.init(type: .text, content: content, owner: (userId == senderId) ? .sender : .receiver, timestamp: Int(Date().timeIntervalSince1970), isRead: false, name: senderName)
+        messages.append(message)
+    }
+    
+    private func finishReceivingMessage() {
+        self.messages.sort{ $0.timestamp < $1.timestamp }
+        DispatchQueue.main.async {
+            if !self.messages.isEmpty {
+                self.tableView.reloadData()
+                self.tableView.scrollToRow(at: IndexPath.init(row: self.messages.count - 1, section: 0), at: .bottom, animated: false)
+            }
+        }
+        self.playSound()
+    }
+    
+    func playSound()  {
+        var soundURL: NSURL?
+        var soundID:SystemSoundID = 0
+        let filePath = Bundle.main.path(forResource: "newMessage", ofType: "wav")
+        soundURL = NSURL(fileURLWithPath: filePath!)
+        AudioServicesCreateSystemSoundID(soundURL!, &soundID)
+        AudioServicesPlaySystemSound(soundID)
     }
     
     /*
@@ -122,7 +192,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return 60
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -134,47 +204,16 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         case .receiver:
             let cell = tableView.dequeueReusableCell(withIdentifier: "receiver_cell", for: indexPath) as! ReceiverCell
             cell.clearCellData()
-            switch messages[indexPath.row].type {
-            case .text:
-                cell.message.text = messages[indexPath.row].content as! String
-            case .photo:
-                if let image = messages[indexPath.row].image {
-                    cell.message.isHidden = true
-                } else {
-                    messages[indexPath.row].downloadImage(indexpathRow: indexPath.row, completion: { (state, index) in
-                        if state == true {
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                            }
-                        }
-                    })
-                }
-            case .location:
-                cell.message.isHidden = true
-            }
+            cell.profilePic.image = #imageLiteral(resourceName: "profile pic")
+            cell.message.text = messages[indexPath.row].content as? String
+            cell.name.text = messages[indexPath.row].name
             return cell
         case .sender:
             let cell = tableView.dequeueReusableCell(withIdentifier: "sender_cell", for: indexPath) as! SenderCell
             cell.clearCellData()
-            cell.profilePic.image = self.currentUser?.profilePic
-            switch messages[indexPath.row].type {
-            case .text:
-                cell.message.text = messages[indexPath.row].content as! String
-            case .photo:
-                if let image = messages[indexPath.row].image {
-                    cell.message.isHidden = true
-                } else {
-                    messages[indexPath.row].downloadImage(indexpathRow: indexPath.row, completion: { (state, index) in
-                        if state == true {
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                            }
-                        }
-                    })
-                }
-            case .location:
-                cell.message.isHidden = true
-            }
+            cell.profilePic.image = #imageLiteral(resourceName: "contact-icon")
+            cell.message.text = messages[indexPath.row].content as? String
+            cell.name.text = messages[indexPath.row].name
             return cell
         }
 

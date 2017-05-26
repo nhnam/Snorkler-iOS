@@ -74,7 +74,11 @@ class User: NSObject {
     }
     
     class func info(forUserID: String, completion: @escaping (User) -> ()) {
-        Database.database().reference().child("users").child(forUserID).child("credentials").observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference()
+            .child("users")
+            .child(forUserID)
+            .child("credentials")
+            .observeSingleEvent(of: .value, with: { snapshot in
             if let data = snapshot.value as? [String: String] {
                 let name = data["name"]!
                 let email = data["email"]!
@@ -91,21 +95,26 @@ class User: NSObject {
     }
     
     class func downloadAllUsers(exceptID: String, completion: @escaping (User) -> ()) {
-        Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
-            let id = snapshot.key
-            let data = snapshot.value as! [String: Any]
-            let credentials = data["credentials"] as! [String: String]
-            if id != exceptID {
-                let name = credentials["name"]!
-                let email = credentials["email"]!
-                let link = URL.init(string: credentials["profilePicLink"]!)
-                URLSession.shared.dataTask(with: link!, completionHandler: { (data, response, error) in
-                    if error == nil {
-                        let profilePic = UIImage.init(data: data!)
-                        let user = User.init(name: name, email: email, id: id, profilePic: profilePic!)
-                        completion(user)
+        Database.database().reference()
+            .child("users")
+            .observe(.value, with: { snapshot in
+            if snapshot.exists() {
+                let id = snapshot.key
+                guard let data = snapshot.value as? [String: Any] else { return }
+                if let credentials = data["credentials"] as? [String: String] {
+                    if id != exceptID {
+                        let name = credentials["name"]!
+                        let email = credentials["email"]!
+                        let link = URL.init(string: credentials["profilePicLink"]!)
+                        URLSession.shared.dataTask(with: link!, completionHandler: { (data, response, error) in
+                            if error == nil {
+                                let profilePic = UIImage.init(data: data!)
+                                let user = User.init(name: name, email: email, id: id, profilePic: profilePic!)
+                                completion(user)
+                            }
+                        }).resume()
                     }
-                }).resume()
+                }
             }
         })
     }

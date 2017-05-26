@@ -28,4 +28,5 @@ class AppSession: Any {
     var currentLocation:String?
     var avatarImage:UIImage?
     var backgroundImage:UIImage?
+    var currentRoom:String?
 }

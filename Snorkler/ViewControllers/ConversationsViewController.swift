@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import AudioToolbox
 import Firebase
+
 
 class ConversationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -21,6 +21,13 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var menuBarButton: UIBarButtonItem!
     
+    private lazy var channelRef: DatabaseReference = Database.database().reference().child("channels")
+    private var channelRefHandle: DatabaseHandle?
+    lazy var isObserveredChannel:Bool = {
+        self.observeChannels()
+        return true
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,7 +38,8 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         }
 
         if !email.isEmpty {
-            User.loginUser(withEmail: email, password: "123456", completion: { (status) in
+            print("Login with email: \(email)")
+            User.loginUser(withEmail: email, password: "123456", completion: { status in
                 if let id = Auth.auth().currentUser?.uid {
                     User.info(forUserID: id, completion: { (user) in
                         print("UserID: \(user.id)")
@@ -40,16 +48,49 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
                 self.fetchData()
             })
         }
-        
+        _ = isObserveredChannel
     }
     
-    func playSound()  {
-        var soundURL: NSURL?
-        var soundID:SystemSoundID = 0
-        let filePath = Bundle.main.path(forResource: "newMessage", ofType: "wav")
-        soundURL = NSURL(fileURLWithPath: filePath!)
-        AudioServicesCreateSystemSoundID(soundURL!, &soundID)
-        AudioServicesPlaySystemSound(soundID)
+    func observeChannels() {
+        channelRefHandle = channelRef.observe(.childAdded, with: { (snapshot) -> () in
+            guard let channelData = snapshot.value as? Dictionary<String, AnyObject> else { return }
+            print("New channel:\(channelData)")
+            self.hideLoading()
+            if let name = channelData["name"] as! String!, name.characters.count > 0 {
+                if name == AppSession.shared.currentRoom {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "toChatVC", sender: name)
+                    }
+                }
+            } else {
+                print("Error! Could not decode channel data")
+            }
+        })
+    }
+    
+    deinit {
+        if let refHandle = channelRefHandle {
+            channelRef.removeObserver(withHandle: refHandle)
+        }
+    }
+    
+    @IBAction func didTouchOpenChat(_ sender: Any) {
+        let askingChannel = UIAlertController(title: "Group name", message: "Please enter group name", preferredStyle: .alert)
+        askingChannel.addTextField { (textfield) in
+            textfield.placeholder = "Channel name"
+        }
+        askingChannel.addAction(UIAlertAction(title: "Create", style: .default, handler: { (action) in
+            let newChannelRef = self.channelRef.childByAutoId()
+            let channelItem = [
+                "name": askingChannel.textFields?.first?.text ?? "Default Room"
+            ]
+            newChannelRef.setValue(channelItem)
+            AppSession.shared.currentRoom = askingChannel.textFields?.first?.text ?? "Default Room"
+            DispatchQueue.main.async {
+                self.showLoading()
+            }
+        }))
+        self.present(askingChannel, animated: true, completion: nil)
     }
     
     func fetchData() {
@@ -59,20 +100,19 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
                 print("Downloaded all users")
             })
         }
-        
-        Conversation.showConversations { (conversations) in
-            self.items = conversations
-            self.items.sort{ $0.lastMessage.timestamp > $1.lastMessage.timestamp }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                for conversation in self.items {
-                    if conversation.lastMessage.isRead == false {
-                        self.playSound()
-                        break
-                    }
-                }
-            }
-        }
+//        
+//        Conversation.showConversations { (conversations) in
+//            self.items = conversations
+//            self.items.sort{ $0.lastMessage.timestamp > $1.lastMessage.timestamp }
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//                for conversation in self.items {
+//                    if conversation.lastMessage.isRead == false {
+//                        break
+//                    }
+//                }
+//            }
+//        }
     }
 
     //MARK: Delegates

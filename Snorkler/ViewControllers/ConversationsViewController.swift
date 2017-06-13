@@ -28,6 +28,10 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         return true
     }()
     
+    lazy var listUsers:[User] = {
+        return AppSession.onlineUsers
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +42,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
         }
 
         if !email.isEmpty {
-            print("Login with email: \(email)")
+            
             User.loginUser(withEmail: email, password: "123456", completion: { status in
                 if let id = Auth.auth().currentUser?.uid {
                     User.info(forUserID: id, completion: { (user) in
@@ -54,7 +58,6 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     func observeChannels() {
         channelRefHandle = channelRef.observe(.childAdded, with: { (snapshot) -> () in
             guard let channelData = snapshot.value as? Dictionary<String, AnyObject> else { return }
-            print("New channel:\(channelData)")
             self.hideLoading()
             if let name = channelData["name"] as! String!, name.characters.count > 0 {
                 if name == AppSession.shared.currentRoom {
@@ -121,15 +124,15 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.items.count == 0 {
+        if self.listUsers.count == 0 {
             return 1
         } else {
-            return self.items.count
+            return self.listUsers.count
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.items.count == 0 {
+        if self.listUsers.count == 0 {
             return self.view.bounds.height - self.navigationController!.navigationBar.bounds.height
         } else {
             return 70
@@ -137,40 +140,21 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch self.items.count {
+        switch self.listUsers.count {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "empty_cell")!
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "conversation_cell", for: indexPath) as! ConversationsTBCell
-            cell.clearCellData()
-            cell.profilePic.image = self.items[indexPath.row].user.profilePic
-            cell.nameLabel.text = self.items[indexPath.row].user.name
-            switch self.items[indexPath.row].lastMessage.type {
-            case .text:
-                let message = self.items[indexPath.row].lastMessage.content as! String
-                cell.messageLabel.text = message
-            case .location:
-                cell.messageLabel.text = "Location"
-            default:
-                cell.messageLabel.text = "Media"
-            }
-            let messageDate = Date.init(timeIntervalSince1970: TimeInterval(self.items[indexPath.row].lastMessage.timestamp))
-            let dataformatter = DateFormatter.init()
-            dataformatter.timeStyle = .short
-            let date = dataformatter.string(from: messageDate)
-            cell.timeLabel.text = date
-            if self.items[indexPath.row].lastMessage.owner == .sender && self.items[indexPath.row].lastMessage.isRead == false {
-                cell.profilePic.layer.borderColor = GlobalVariables.blue.cgColor
-                cell.messageLabel.textColor = GlobalVariables.purple
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "friend_cell", for: indexPath) as! FriendCell
+            let user = self.listUsers[indexPath.row]
+            cell.user = user
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.items.count > 0 {
-            self.selectedUser = self.items[indexPath.row].user
+        if self.listUsers.count > 0 {
+            self.selectedUser = self.listUsers[indexPath.row]
             self.performSegue(withIdentifier: "toChatVC", sender: self)
         }
     }

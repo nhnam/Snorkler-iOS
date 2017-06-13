@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftLocation
+import AlamofireImage
 
 extension UIImageView{
     func blurImage() {
@@ -71,6 +72,7 @@ class UserProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -79,6 +81,7 @@ class UserProfileViewController: UIViewController {
         guard let userinfo = AppSession.shared.userInfo else { return }
         nameLabel.text = userinfo.firstname + " " + userinfo.lastname
         
+        AppSession.beginSession()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,30 +89,46 @@ class UserProfileViewController: UIViewController {
         
         self.locationLabel.text = AppSession.shared.currentLocation ?? "Not found"
         loadLocation()
-        guard let image = AppSession.shared.avatarImage else { return }
-        avatarImage.image = image
-        backgroundImage.image = image
-        backgroundImage.blurImage()
+        if let dpImage = AppSession.shared.userInfo?.dp {
+            avatarImage.af_setImage(withURL: URL(string:dpImage)!)
+            backgroundImage.af_setImage(withURL: URL(string:dpImage)!, placeholderImage: nil, filter: nil, progress: nil, progressQueue: DispatchQueue(label: "com.snorkler.loading_image"), imageTransition: UIImageView.ImageTransition.crossDissolve(0.2), runImageTransitionIfCached: true, completion: { (dataResponse) in
+                self.backgroundImage.blurImage()
+            })
+        } else {
+            guard let image = AppSession.shared.avatarImage else { return }
+            avatarImage.image = image
+            backgroundImage.image = image
+            backgroundImage.blurImage()
+        }
     }
 
     
     private func loadLocation() {
-        Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) in
-            Location.getPlacemark(forLocation: location, success: { placemarks in
-                if let place = placemarks.first {
-                    guard let formatedAdrressArray:[String] = place.addressDictionary?["FormattedAddressLines"] as? [String] else { return }
-                    let address = formatedAdrressArray.joined(separator: ", ")
-                    print(address)
-                    AppSession.shared.currentLocation = address
-                    self.locationLabel.text = address
-                    self.locationLabel.sizeToFit()
+        DispatchQueue(label: "com.snorkler.locationupdate").async {
+            Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) in
+                Location.getPlacemark(forLocation: location, success: { placemarks in
+                    if let place = placemarks.first {
+                        if let addressDict = place.addressDictionary {
+                            let district:String = addressDict["SubAdministrativeArea"] as? String ?? ""
+                            let city:String = addressDict["State"] as? String ?? ""
+                            let country:String = addressDict["Country"] as? String ?? ""
+                            let address = ([district, city, country] as [String]).joined(separator: ", ")
+                            print(address)
+                            AppSession.shared.currentLocation = address
+                            
+                            DispatchQueue.main.async {
+                                self.locationLabel.text = address
+                                self.locationLabel.sizeToFit()
+                            }
+                        }
+                    }
+                }) { error in
+                    print("Cannot retrive placemark due to an error \(error)")
                 }
-            }) { error in
-                print("Cannot retrive placemark due to an error \(error)")
+            }) { (request, last, error) in
+                request.cancel() // stop continous location monitoring on error
+                print("Location monitoring failed due to an error \(error)")
             }
-        }) { (request, last, error) in
-            request.cancel() // stop continous location monitoring on error
-            print("Location monitoring failed due to an error \(error)")
         }
     }
     

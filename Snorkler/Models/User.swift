@@ -8,6 +8,7 @@
 
 import Foundation
 import Firebase
+import SwiftyJSON
 
 class User: NSObject {
     
@@ -15,8 +16,8 @@ class User: NSObject {
     let name: String
     let email: String
     let id: String
-    var profilePic: UIImage
-    
+    var profilePic: UIImage?
+    var avatarUrl:String?
     //MARK: Methods
     class func registerUser(withName: String, email: String, password: String, profilePic: UIImage, completion: @escaping (Bool) -> ()) {
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
@@ -133,6 +134,13 @@ class User: NSObject {
         self.email = email
         self.id = id
         self.profilePic = profilePic
+    }
+    init(json:JSON) {
+        self.name = "\(json["firstname"].stringValue)  \(json["lastname"].stringValue)"
+        self.email = json["member_email"].stringValue
+        self.id = json["member_id"].stringValue
+        self.profilePic = nil
+        self.avatarUrl = json["dp"].stringValue
     }
 }
 

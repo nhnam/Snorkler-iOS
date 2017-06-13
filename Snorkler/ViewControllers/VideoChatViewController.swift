@@ -14,10 +14,16 @@ import GPUImage
 import Fakery
 import Firebase
 
-let server = "https://face2faceserver.herokuapp.com"
-//let server = "http://localhost:8000"
+let video_server = "https://face2faceserver.herokuapp.com"
+//let video_server = "http://localhost:8000"
 
 let subscribeToSelf = false
+
+struct Session {
+    var sessionId:String
+    var token:String
+    var key:String
+}
 
 class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     @IBOutlet weak var subscriberContainer: UIView!
@@ -28,6 +34,26 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var endButton: UIButton!
+    @IBOutlet weak var controlsBottomConstraint: NSLayoutConstraint!
+    
+    internal var pubRect = CGRect.zero
+    internal var subRect = CGRect.zero
+    
+    internal var session : OTSession?
+    internal var publisher : OTPublisher?
+    internal var subscriber : OTSubscriber?
+    
+    internal let ApiKey = "45839832"
+    internal var mySession:Session = Session(sessionId: "", token: "", key: AppSession.shared.userInfo?.email ?? "unknown") {
+        didSet{
+            if (mySession.sessionId.characters.count > 0) {
+                session = OTSession(apiKey: ApiKey, sessionId: mySession.sessionId, delegate: self)
+            }
+        }
+    }
+    // current session = mysession
+    internal var currentSession:Session = Session(sessionId: "", token: "", key: AppSession.shared.userInfo?.email ?? "unknown")
+    internal var listSessions:[Session] = []
     
     var stillImageOutput: AVCaptureStillImageOutput?
     lazy var cameraSession: AVCaptureSession = {
@@ -43,33 +69,8 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         return preview!
     }()
     
-    internal var session : OTSession?
-    internal var publisher : OTPublisher?
-    internal var subscriber : OTSubscriber?
-    
-    // Replace with your OpenTok API key
-    private let ApiKey = "45839832"
-    // Replace with your generated session ID
-    private var SessionID = "" {
-        didSet{
-            if (SessionID.characters.count > 0) {
-                session = OTSession(apiKey: ApiKey, sessionId: SessionID, delegate: self)
-            }
-        }
-    }
-    // Replace with your generated token
-    private var Token = ""
-    
-    internal var pubRect = CGRect.zero
-    internal var subRect = CGRect.zero
-    
-    private var timer:Timer?
-    private var count = 3;
-    
-    private var myVideoUsername:String = AppSession.shared.userInfo?.email ?? "unknown"
-    
-    @IBOutlet weak var videoUsernameField: UITextField!
-    @IBOutlet weak var connectButton: UIButton!
+    internal var timer:Timer?
+    internal var count = 3;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,10 +81,6 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             $0?.layer.cornerRadius = ($0?.frame.size.height ?? 50)/2;}
         [subscriberContainer, publisherContainer].forEach {
             $0?.layer.cornerRadius = 5.0;}
-        
-        let marginField = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        videoUsernameField.leftViewMode = .always
-        videoUsernameField.leftView = marginField
         
         if #available(iOS 10.0, *) {
             setupCameraSession()
@@ -98,8 +95,14 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         subRect = subscriberContainer.bounds
         subscriberLoadingIndicator.isHidden = true
         publisherLoadingIndicator.isHidden = true
-        videoUsernameField.text = myVideoUsername
-        getSessionCredentials(username: myVideoUsername)
+        
+        // Connect to my own session
+        getSessionCredentials(username: mySession.key)
+        
+        let listKey = AppSession.onlineUsers.map { return $0.email }
+        listKey.forEach { (key) in
+            getSessionCredentials(username: key)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -194,22 +197,17 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         }
     }
     
-    @IBAction func didTouchVideoUserConnectButton(_ sender: Any) {
-        
-        if let username = videoUsernameField.text {
-            // disconnect
-            pubLoading(false)
-            subLoading(false)
-            doDisconnect(escape: false)
-
-            getSessionCredentials(username: username, onReady: { [weak self] ready in
-                if ready {
-                    self?.pubLoading(true)
-                    self?.subLoading(true)
-                    self?.doConnect()
-                }
-            })
-        }
+    func connectTo(key username:String) {
+        pubLoading(false)
+        subLoading(false)
+        doDisconnect(escape: false)
+        getSessionCredentials(username: username, onReady: { [weak self] ready in
+            if ready {
+                self?.pubLoading(true)
+                self?.subLoading(true)
+                self?.doConnect()
+            }
+        })
     }
     
     @IBAction func startButtonDidTouch(_ sender: Any) {
@@ -219,31 +217,36 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     @IBAction func endButtonDidTouch(_ sender: Any) {
-        DispatchQueue(label: "EndStreaming").async {
+        DispatchQueue(label: "EndStreaming").async {  [weak self] in
             DispatchQueue.main.async {
-                self.pubLoading(false)
-                self.subLoading(false)
-                self.doDisconnect(escape: false)
-                self.previewView.isHidden = false
-                self.seekNext()
+                self?.pubLoading(false)
+                self?.subLoading(false)
+                self?.doDisconnect(escape: false)
+                self?.previewView.isHidden = false
+                self?.seekNext()
             }
         }
     }
     
     @IBAction func closeDidTouch(_ sender: Any) {
-        pubLoading(false)
-        subLoading(false)
-        doDisconnect(escape: true)
-        if (cameraSession.isRunning ){
-            cameraSession.stopRunning()
+        DispatchQueue(label: "CloseStreaming").async { [weak self] in
+            DispatchQueue.main.async {
+                if (self?.cameraSession.isRunning ?? false){
+                    self?.cameraSession.stopRunning()
+                }
+                self?.previewView.isHidden = true
+                self?.pubLoading(false)
+                self?.subLoading(false)
+                self?.doDisconnect(escape: true)
+            }
         }
-        previewView.isHidden = true
     }
     
     
     private func getSessionCredentials(username akey:String, onReady ready: ((Bool)->())? = nil) {
         showLoading()
-        Alamofire.request(server + "/session/" + akey).responseJSON { [unowned self] response in
+        
+        Alamofire.request(video_server + "/session/" + akey).responseJSON { [unowned self] response in
             self.hideLoading()
             print("\(String(describing: response.request))")
             print("Session: \(response.result)")
@@ -256,18 +259,23 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
             if let JSON = response.result.value {
                 print("Session: \(JSON)")
                 guard let jsonDict:[String:Any] = JSON as? [String:Any] else { return }
-                self.Token = (jsonDict["token"] as? String) ?? ""
-                self.SessionID = (jsonDict["sessionId"] as? String) ?? ""
+                let token = (jsonDict["token"] as? String) ?? ""
+                let sessionId = (jsonDict["sessionId"] as? String) ?? ""
+                if akey == self.mySession.key {
+                    self.mySession = Session(sessionId: sessionId, token: token, key: akey)
+                } else {
+                    self.listSessions.append(Session(sessionId: sessionId, token: token, key: akey))
+                }
                 ready?(true)
             }
         }
     }
     
     func doConnect() {
-        print("Do Connect")
+        print("Do Connect to session: \(currentSession.sessionId)")
         if let session = self.session {
             var maybeError : OTError?
-            session.connect(withToken: Token, error: &maybeError)
+            session.connect(withToken: mySession.token, error: &maybeError)
             if let error = maybeError {
                 showAlert(message: error.localizedDescription)
             }

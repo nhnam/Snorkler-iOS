@@ -20,12 +20,6 @@ class AddAvatarPhotoViewController: UIViewController, ImagePickerDelegate {
     private var percent:Double = 0.0 {
         didSet {
             print("\(self.percent)")
-//            DispatchQueue.main.async {
-//
-//                let size = self.previewImageView.frame.size
-//                let dx = size.width - CGFloat((1.0-self.percent))*size.width
-//                self.sliderView.frame = self.sliderView.frame.offsetBy(dx: dx, dy: 0)
-//            }
         }
     }
     
@@ -60,13 +54,12 @@ class AddAvatarPhotoViewController: UIViewController, ImagePickerDelegate {
         }
         
         showLoading()
-        guard let imageData = UIImageJPEGRepresentation(imageToUpload!, 1.0) else { return }
+        guard let imageData = UIImageJPEGRepresentation(imageToUpload!, 1.0)?.base64EncodedData() else { return }
         guard let member_id = AppSession.shared.userInfo?.memberId else { return }
-//        sliderView.isHidden = false
-//        sliderView.translatesAutoresizingMaskIntoConstraints = true
-//        percent = 0.0
         AppSession.shared.avatarImage = imageToUpload
-        ApiHelper.updateProfilePicture(params: ["member_id": member_id], imageData: imageData,uploadProgress:{ finishedPercent in
+        ApiHelper.updateProfilePicture(params: ["member_id": member_id],
+                                       imageData: imageData,
+                                       uploadProgress:{ finishedPercent in
             self.percent = finishedPercent
         }, onsuccess: { (json) in
             self.hideLoading()
@@ -98,6 +91,7 @@ class AddAvatarPhotoViewController: UIViewController, ImagePickerDelegate {
     func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
         
     }
+    
     func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
         guard let image = images.first else { return }
         imageToUpload = image

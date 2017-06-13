@@ -6,6 +6,7 @@ target 'Snorkler' do
 
   pod 'OpenTok', '~> 2.11.0'
   pod 'Alamofire', '~> 4.4.0'
+  pod 'AlamofireImage', '~> 3.2.0'
   pod 'SwiftyJSON', '~> 3.1.4'
   pod 'Fakery', '~> 2.0.0'
   pod 'TPKeyboardAvoiding', '~> 1.3.1'
@@ -27,4 +28,7 @@ target 'Snorkler' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'KeyboardMan'
+  pod 'Xia'
+  pod 'Fabric'
+  pod 'Crashlytics'
 end

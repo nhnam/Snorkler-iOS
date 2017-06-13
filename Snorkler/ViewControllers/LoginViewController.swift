@@ -25,16 +25,36 @@ class LoginViewController: UIViewController {
         emailField.attributedPlaceholder = NSAttributedString(string: "email@domain.com", attributes: [NSForegroundColorAttributeName : UIColor.white.withAlphaComponent(0.7)])
         passwordField.attributedPlaceholder = NSAttributedString(string: "******", attributes: [NSForegroundColorAttributeName : UIColor.white.withAlphaComponent(0.7)])
         loadLocation()
+        
+        if let email = AppSession.getCache("email") {
+            emailField.text = email
+        }
     }
     
     private func loadLocation() {
         Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) in
             Location.getPlacemark(forLocation: location, success: { placemarks in
                 if let place = placemarks.first {
-                    guard let formatedAdrressArray:[String] = place.addressDictionary?["FormattedAddressLines"] as? [String] else { return }
-                    let address = formatedAdrressArray.joined(separator: ", ")
-                    print(address)
-                    AppSession.shared.currentLocation = address
+                    if let addressDict = place.addressDictionary {
+                        // Street
+                        // ZIP
+                        // Country
+                        // SubThoroughfare
+                        // State
+                        // Name
+                        // SubAdministrativeArea
+                        // Thoroughfare
+                        // FormattedAddressLines
+                        // CountryCode
+                        // SubLocality
+                        let district:String = addressDict["SubAdministrativeArea"] as? String ?? ""
+                        let city:String = addressDict["State"] as? String ?? ""
+                        let country:String = addressDict["Country"] as? String ?? ""
+                        let address = ([district, city, country] as [String]).joined(separator: ", ")
+                        print(address)
+                        AppSession.shared.currentLocation = address
+                    }
+                    
                 }
             }) { error in
                 print("Cannot retrive placemark due to an error \(error)")
@@ -58,6 +78,10 @@ class LoginViewController: UIViewController {
     @IBAction func loginButtonDidTouch(_ sender: Any) {
         
         func onLogInSuccess() {
+            if let email = emailField.text {
+                AppSession.cache(email, forKey: "email")
+            }
+            
             //toAddInterests
             //toUserExplorer
             self.performSegue(withIdentifier: "toUserExplorer", sender: self)
@@ -66,13 +90,14 @@ class LoginViewController: UIViewController {
         showLoading()
         ApiHelper.signin(email:emailField.text ?? "", password:passwordField.text ?? "", onsuccess: { [weak self] (result) in
             self?.hideLoading()
-            guard let json = result as? JSON else { return }
+            guard let json = result else { return }
             
             AppSession.shared.userInfo = UserInfo(firstname: json["data"]["firstname"].string ?? "",
                                                   lastname: json["data"]["lastname"].string ?? "",
                                                   token: "",
                                                   memberId: json["data"]["member_id"].string ?? "",
-                                                  email: json["data"]["email"].string ?? self?.emailField.text ?? "")
+                                                  email: json["data"]["email"].string ?? self?.emailField.text ?? "",
+                                                  dp:json["data"]["dp"].string ?? "")
             
             if( AppSession.shared.userInfo?.memberId != nil && AppSession.shared.userInfo?.memberId != "") {
                 onLogInSuccess()

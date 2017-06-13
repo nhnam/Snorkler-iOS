@@ -53,7 +53,7 @@ on GitHub.
 Interoperability
 ----------------
 
-Apps written with the OpenTok iOS SDK 2.11.0 can interoperate with OpenTok apps
+Apps written with the OpenTok iOS SDK 2.11.1 can interoperate with OpenTok apps
 written with the following OpenTok SDKs:
 
 * OpenTok.js 2.9+

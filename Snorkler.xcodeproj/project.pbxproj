@@ -76,6 +76,7 @@
 		D8B0BDD81EC567F5006425A4 /* VideoChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B0BDD61EC567F5006425A4 /* VideoChatViewController.xib */; };
 		D8B0BDDA1EC56D42006425A4 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B0BDD91EC56D42006425A4 /* UserProfileViewController.swift */; };
 		D8B0BDDC1EC5715A006425A4 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B0BDDB1EC5715A006425A4 /* RegisterViewController.swift */; };
+		D8D5F2771EEFD74D00DDF4F5 /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D5F2761EEFD74D00DDF4F5 /* FriendCell.swift */; };
 		FF0156269A3A991853400AF4 /* Pods_Snorkler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53D7C481E96662DB340A5212 /* Pods_Snorkler.framework */; };
 /* End PBXBuildFile section */
 
@@ -162,6 +163,7 @@
 		D8B0BDD61EC567F5006425A4 /* VideoChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoChatViewController.xib; sourceTree = "<group>"; };
 		D8B0BDD91EC56D42006425A4 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		D8B0BDDB1EC5715A006425A4 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		D8D5F2761EEFD74D00DDF4F5 /* FriendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,6 +341,7 @@
 				D85408E61ED67EEF00900FB7 /* ReceiverCell.swift */,
 				D85408E81ED67F1F00900FB7 /* ConversationsTBCell.swift */,
 				D85408EA1ED67F4900900FB7 /* ContactsCVCell.swift */,
+				D8D5F2761EEFD74D00DDF4F5 /* FriendCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				C4EE41F41C90917E00B985AB /* Resources */,
 				FF1B7AA3DC7DA46F501A861D /* [CP] Embed Pods Frameworks */,
 				3EF827026645A0CB1961AFEE /* [CP] Copy Pods Resources */,
+				D8D5F2781EEFECAE00DDF4F5 /* Crashlytic */,
 			);
 			buildRules = (
 			);
@@ -486,6 +490,20 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		D8D5F2781EEFECAE00DDF4F5 /* Crashlytic */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Crashlytic;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 02bfb35b35cf8a8d432050b5b490bd19bd4f3544 8e85a2d60406ff4675ac4fc0005aa5ccb3307ebe5a0c703c7841f7d77a20699f";
+		};
 		FF1B7AA3DC7DA46F501A861D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -522,6 +540,7 @@
 				D80C17831ECAF8B4007FFB50 /* AddInterestViewController.swift in Sources */,
 				D87DA39B1ECEB5EB00F82D2F /* SchoolPicker.swift in Sources */,
 				D85408E11ED67D0900900FB7 /* Message.swift in Sources */,
+				D8D5F2771EEFD74D00DDF4F5 /* FriendCell.swift in Sources */,
 				D87B09DC1EC470F40037D279 /* CustomCalloutView.swift in Sources */,
 				D87B09DF1EC470F40037D279 /* SnorklerUserAnnotation.swift in Sources */,
 				C4EE41FA1C90917E00B985AB /* AppDelegate.swift in Sources */,

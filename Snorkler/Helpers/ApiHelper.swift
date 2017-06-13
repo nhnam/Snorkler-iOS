@@ -17,12 +17,13 @@ let apiSignIn = "/api/signin/"
 let apiGetMemberDetail = "/api/GetMemberDetails/"
 let apiUpdateMemberDetail = "/api/updateMemberDetails/"
 let apiChangePassword = "/api/changePassword/"
-let apiUpdateDP = "/api/updateDP/"
+let apiUpdateDP = "/api/updateDPBase64/"
 
 let apiGetTrendingInterests = "/api/interests/"
 let apiUpdateInterests = "/api/updateMemberInterests/"
 let apiGetSchools = "/api/schools/"
 let apiUpdateEducation = "/api/updateMemberEducation/"
+let apiGetOnlineUsers = "/api/onlineUsers/"
 
 public enum ApiType {
     case signin
@@ -35,6 +36,7 @@ public enum ApiType {
     case updateInterests
     case getSchools
     case updateEducation
+    case getOnlineUsers
 }
 
 class ApiHelper: Any {
@@ -56,15 +58,8 @@ class ApiHelper: Any {
         return (isDataValid, errMessage);//valid
     }
     
-    class func resultClasssify(with response:DataResponse<Any>, forType type:ApiType, onsuccess success:@escaping (Any?)->(), onfailure fail:(String?)->() ) {
+    class func resultClasssify(with response:DataResponse<Any>, forType type:ApiType, onsuccess success:@escaping (JSON?)->(), onfailure fail:(String?)->() ) {
         func doingOnSuccess(_ json:JSON) {
-            switch type {
-            case .signin:
-                break
-            default:
-                break
-            }
-            print("\(type).JSON: \(json)")
             success(json)
         }
         func doingOnFail(_ error: Error) {
@@ -80,7 +75,7 @@ class ApiHelper: Any {
         
     }
     
-    class func signin(email aEmail:String, password aPassword: String, onsuccess success:@escaping (Any?)->(), onfailure fail:@escaping (String?)->()) {
+    class func signin(email aEmail:String, password aPassword: String, onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         let params = ["email":aEmail, "password":aPassword];
         let (valid, errMsg) = validateParam(params, forApiType: .signin)
         if !valid {
@@ -92,7 +87,7 @@ class ApiHelper: Any {
         }
     }
     
-    class func signup(params aParams:[String:Any], onsuccess success:@escaping (Any?)->(), onfailure fail:@escaping (String?)->()) {
+    class func signup(params aParams:[String:Any], onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         let (valid, errMsg) = validateParam(aParams, forApiType: .signup)
         if !valid {
             fail(errMsg);
@@ -103,7 +98,7 @@ class ApiHelper: Any {
         }
     }
     
-    class func getMemberDetail(memberId aId:String, onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func getMemberDetail(memberId aId:String, onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         let params = ["member_id":aId];
         let (valid, errMsg) = validateParam(params, forApiType: .getMemberDetail)
         if !valid {
@@ -115,7 +110,7 @@ class ApiHelper: Any {
         }
     }
     
-    class func updateMemberDetail(params aParams:[String:Any], onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func updateMemberDetail(params aParams:[String:Any], onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         let (valid, errMsg) = validateParam(aParams, forApiType: .updateMemberDetail)
         if !valid {
             fail(errMsg);
@@ -126,7 +121,7 @@ class ApiHelper: Any {
         }
     }
     
-    class func changePassword(params aParams:[String:Any], onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func changePassword(params aParams:[String:Any], onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         let (valid, errMsg) = validateParam(aParams, forApiType: .changePassword)
         if !valid {
             fail(errMsg);
@@ -137,13 +132,13 @@ class ApiHelper: Any {
         }
     }
     
-    class func getTrendingInterests(onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func getTrendingInterests(onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         Alamofire.request(ApiHost + apiGetTrendingInterests, method: .get, parameters: nil).validate().responseJSON { response in
             resultClasssify(with: response, forType: .getTrendingInterests, onsuccess: success, onfailure: fail)
         }
     }
     
-    class func updateInterests(params aParams:[String:Any], onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func updateInterests(params aParams:[String:Any], onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         let (valid, errMsg) = validateParam(aParams, forApiType: .updateInterests)
         if !valid {
             fail(errMsg);
@@ -154,13 +149,13 @@ class ApiHelper: Any {
         }
     }
 
-    class func getSchools(onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func getSchools(onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         Alamofire.request(ApiHost + apiGetSchools, method: .get, parameters: nil).validate().responseJSON { response in
             resultClasssify(with: response, forType: .getSchools, onsuccess: success, onfailure: fail)
         }
     }
     
-    class func updateEducation(params aParams:[String:Any], onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func updateEducation(params aParams:[String:Any], onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
         let (valid, errMsg) = validateParam(aParams, forApiType: .updateEducation)
         if !valid {
             fail(errMsg);
@@ -171,18 +166,28 @@ class ApiHelper: Any {
         }
     }
     
-    class func updateProfilePicture(params aParams:[String:Any], imageData data:Data,uploadProgress progress:@escaping (Double)->(), onsuccess success:@escaping (Any)->(), onfailure fail:@escaping (String?)->()) {
+    class func updateProfilePicture(params aParams:[String:Any],
+                                    imageData data:Data,
+                                    uploadProgress progress:@escaping (Double)->(),
+                                    onsuccess success:@escaping (JSON?)->(),
+                                    onfailure fail:@escaping (String?)->()) {
+        
         let (valid, errMsg) = validateParam(aParams, forApiType: .updateDP)
+        
         if !valid {
             fail(errMsg);
             return;
         }
+        
         let url = ApiHost + apiUpdateDP
+        
         Alamofire.upload(multipartFormData: { (form) in
-            form.append(data, withName: "dp")
+            
             if let member_id = aParams["member_id"] as? String {
                 form.append(member_id.data(using: .utf8)!, withName: "member_id")
             }
+            form.append(data, withName: "dp", fileName: "avatar.jpg", mimeType: "image/jpg")
+            
         }, to: url, encodingCompletion: { (result) in
             switch result {
             case .success(let upload, _, _):
@@ -193,10 +198,15 @@ class ApiHelper: Any {
                     resultClasssify(with: response, forType: .updateDP, onsuccess: success, onfailure: fail)
                 }
             case .failure(let encodingError):
-                //self.delegate?.showFailAlert()
                 print(encodingError)
                 fail(encodingError.localizedDescription)
             }
         })
+    }
+    
+    class func getOnlineUsers(onsuccess success:@escaping (JSON?)->(), onfailure fail:@escaping (String?)->()) {
+        Alamofire.request(ApiHost + apiGetOnlineUsers, method: .get, parameters: nil).validate().responseJSON { response in
+            resultClasssify(with: response, forType: .getOnlineUsers, onsuccess: success, onfailure: fail)
+        }
     }
 }

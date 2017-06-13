@@ -1,5 +1,10 @@
 PODS:
   - Alamofire (4.4.0)
+  - AlamofireImage (3.2.0):
+    - Alamofire (~> 4.1)
+  - Crashlytics (3.8.4):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.11)
   - Fakery (2.0.0)
   - Firebase/Auth (4.0.0):
     - Firebase/Core
@@ -47,12 +52,13 @@ PODS:
   - ImagePicker (2.1.1)
   - JCTagListView (1.0.2)
   - KeyboardMan (1.1.0)
-  - OpenTok (2.11.0)
+  - OpenTok (2.11.1)
   - Realm (2.7.0):
     - Realm/Headers (= 2.7.0)
   - Realm/Headers (2.7.0)
   - RealmSwift (2.7.0):
     - Realm (= 2.7.0)
+  - SnapKit (3.2.0)
   - SwiftARGB (0.9.3)
   - SwiftDate (4.1.2)
   - SwiftLocation (2.0.7)
@@ -62,9 +68,14 @@ PODS:
   - UIColor-Hex (1.3.4)
   - UIImage-Color (1.1.1)
   - Validator (2.1.1)
+  - Xia (0.0.4):
+    - SnapKit (~> 3.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4.0)
+  - AlamofireImage (~> 3.2.0)
+  - Crashlytics
+  - Fabric
   - Fakery (~> 2.0.0)
   - Firebase/Auth
   - Firebase/Core
@@ -87,6 +98,7 @@ DEPENDENCIES:
   - UIColor-Hex (~> 1.3.4)
   - UIImage-Color (~> 1.1.1)
   - Validator (~> 2.1.1)
+  - Xia
 
 EXTERNAL SOURCES:
   IJProgressView:
@@ -99,6 +111,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
+  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   Fakery: 97b99c23937d2e025d9135c75e2b17351ccd5031
   Firebase: 284eea779b73fdff309791817da7c68bff8dd572
   FirebaseAnalytics: 6f08e746f7d66f5452931bc2e822b5df9c66b64a
@@ -114,9 +129,10 @@ SPEC CHECKSUMS:
   ImagePicker: fe4c699abb56ff03994fa98d8b02e3883ee118be
   JCTagListView: 963c9f5a867e2416e28bcf056e32c572082d5446
   KeyboardMan: 96e61167a0fb3a4e31662d41802a9dd920b6d097
-  OpenTok: 329d04317e02cc018b8faf5851b921b87bd9562b
+  OpenTok: 71593edaae9c18284d4b46eb22a4a4fa69964d21
   Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
   RealmSwift: 6d06425d3900c86473c4f323bf6949b43fca22bc
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftARGB: 37a0aeaed8e99ed691e7e574af1ae3f85c731286
   SwiftDate: 2dfdebd4f67ae71c9c3e2413ee3c56947f302858
   SwiftLocation: 1fe2e15a5812e961496e82eeaca71d03e829e47a
@@ -126,7 +142,8 @@ SPEC CHECKSUMS:
   UIColor-Hex: fa81910f914482931c150fd73a09e77ff9226ec8
   UIImage-Color: 29d79c2acdd1836eae9815836a14fddfcd2db38f
   Validator: b1793fbfd0046097551d0edd18e2c30792d69ef5
+  Xia: 5664f5bbd7f16cc490c38edb30614289c02d203b
 
-PODFILE CHECKSUM: e05852d3ec04ef91fbda32c8fd0f728c49a0ea23
+PODFILE CHECKSUM: 7e636aa7dfe2d91226d79154ebca71132b794451
 
 COCOAPODS: 1.2.1

@@ -11,8 +11,8 @@ import OpenTok
 import Alamofire
 import AVFoundation
 import GPUImage
-import Fakery
 import Firebase
+import SwiftyJSON
 
 let video_server = "https://face2faceserver.herokuapp.com"
 //let video_server = "http://localhost:8000"
@@ -26,6 +26,7 @@ struct Session {
 }
 
 class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+    
     @IBOutlet weak var subscriberContainer: UIView!
     @IBOutlet weak var publisherContainer: UIView!
     @IBOutlet weak var previewView: UIView!
@@ -54,6 +55,10 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     // current session = mysession
     internal var currentSession:Session = Session(sessionId: "", token: "", key: AppSession.shared.userInfo?.email ?? "unknown")
     internal var listSessions:[Session] = []
+    lazy internal var listUsers:[User] = {
+        return AppSession.onlineUsers
+    }()
+    internal var userIndex:Int = 0
     
     var stillImageOutput: AVCaptureStillImageOutput?
     lazy var cameraSession: AVCaptureSession = {
@@ -78,9 +83,12 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         [startButton, endButton].forEach {
             $0?.layer.borderColor = $0?.titleLabel?.textColor.cgColor
             $0?.layer.borderWidth = 1.5;
-            $0?.layer.cornerRadius = ($0?.frame.size.height ?? 50)/2;}
+            $0?.layer.cornerRadius = ($0?.frame.size.height ?? 50)/2;
+        }
+        
         [subscriberContainer, publisherContainer].forEach {
-            $0?.layer.cornerRadius = 5.0;}
+            $0?.layer.cornerRadius = 5.0;
+        }
         
         if #available(iOS 10.0, *) {
             setupCameraSession()
@@ -91,6 +99,7 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         pubRect = publisherContainer.bounds
         subRect = subscriberContainer.bounds
         subscriberLoadingIndicator.isHidden = true
@@ -112,15 +121,25 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         cameraSession.startRunning()
     }
     
-    @available(iOS 10.0, *)
     func setupCameraSession() {
         #if (arch(i386) || arch(x86_64)) && os(iOS)
             return
         #endif
-        let captureDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInWideAngleCamera, mediaType: AVMediaTypeVideo, position: .front) as AVCaptureDevice
+        
+        guard let devices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as? [AVCaptureDevice] else { return }
+        
+        for device in devices {
+            if device.position == .front {
+                initWithCamera(device)
+            }
+        }
+    }
+    
+    func initWithCamera(_ camera:AVCaptureDevice) {
+        
         do {
-
-            let deviceInput = try AVCaptureDeviceInput(device: captureDevice)
+            
+            let deviceInput = try AVCaptureDeviceInput(device: camera)
             
             cameraSession.beginConfiguration()
             
@@ -146,6 +165,7 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         catch let error as NSError {
             NSLog("\(error), \(error.localizedDescription)")
         }
+
     }
     
     public func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
@@ -165,14 +185,18 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     }
     
     func askForConnect() {
-        let faker = Faker.init()
-        timerLabel.text = "Connecting to a \(20 + faker.number.randomInt() % 10) years old guy from \(faker.address.country())"
+        if userIndex < listUsers.count {
+            let user = listUsers[userIndex]
+            if let address = user.address {
+                timerLabel.text = "Connecting to \(user.name) guy from \(address)"
+            } else {
+                timerLabel.text = "Connecting to \(user.name)"
+            }
+        }
     }
     
     func seekNext() {
         count = 3;
-        let faker = Faker.init()
-        timerLabel.text = faker.lorem.sentence(wordsAmount: 20)
         timerLabel.numberOfLines = 0
         timerLabel.lineBreakMode = .byWordWrapping
         startTimer()
@@ -244,23 +268,25 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
     
     private func getSessionCredentials(username akey:String, onReady ready: ((Bool)->())? = nil) {
-        showLoading()
         
         Alamofire.request(video_server + "/session/" + akey).responseJSON { [unowned self] response in
-            self.hideLoading()
-            print("\(String(describing: response.request))")
-            print("Session: \(response.result)")
+
+            if let request = response.request, let code = response.response?.statusCode {
+                print("-------------------------------------------------------")
+                print("\(request). \(code)")
+            }
+            
             if let error = response.error {
-                print("Get session fail: \(error.localizedDescription)")
-                print("RESPONSE:\n\(response)")
+                print("Get session fail: \(error.localizedDescription). Content:")
+                print("\n\(response)")
                 ready?(false)
                 return
             }
-            if let JSON = response.result.value {
-                print("Session: \(JSON)")
-                guard let jsonDict:[String:Any] = JSON as? [String:Any] else { return }
-                let token = (jsonDict["token"] as? String) ?? ""
-                let sessionId = (jsonDict["sessionId"] as? String) ?? ""
+            if let data = response.data {
+                let json = JSON(data)
+                print("\(json)")
+                let token = json["token"].stringValue
+                let sessionId = json["sessionId"].stringValue
                 if akey == self.mySession.key {
                     self.mySession = Session(sessionId: sessionId, token: token, key: akey)
                 } else {
@@ -342,12 +368,12 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
         print("❗️ \(message)")
     }
     
-    fileprivate func cleanupSubscriber() {
+    func cleanupSubscriber() {
         subscriber?.view?.removeFromSuperview()
         subscriber = nil
     }
     
-    fileprivate func processError(_ error: OTError?) {
+    func processError(_ error: OTError?) {
         if let err = error {
             DispatchQueue.main.async {
                 let controller = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
@@ -360,68 +386,3 @@ class VideoChatViewController: UIViewController, AVCaptureVideoDataOutputSampleB
     
 }
 
-// MARK: - OTSession delegate callbacks
-extension VideoChatViewController: OTSessionDelegate {
-    func sessionDidConnect(_ session: OTSession) {
-        print("Session connected")
-        doPublish()
-    }
-    
-    func sessionDidDisconnect(_ session: OTSession) {
-        print("Session disconnected")
-    }
-    
-    func session(_ session: OTSession, streamCreated stream: OTStream) {
-        print("Session streamCreated: \(stream.streamId)")
-        if subscriber == nil && !subscribeToSelf {
-            doSubscribe(stream)
-        }
-    }
-    
-    func session(_ session: OTSession, streamDestroyed stream: OTStream) {
-        print("Session streamDestroyed: \(stream.streamId)")
-        if let subStream = subscriber?.stream, subStream.streamId == stream.streamId {
-            cleanupSubscriber()
-        }
-    }
-    
-    func session(_ session: OTSession, didFailWithError error: OTError) {
-        print("session Failed to connect: \(error.localizedDescription)")
-    }
-    
-}
-
-// MARK: - OTPublisher delegate callbacks
-extension VideoChatViewController: OTPublisherDelegate {
-    func publisher(_ publisher: OTPublisherKit, streamCreated stream: OTStream) {
-        if subscriber == nil && subscribeToSelf {
-            doSubscribe(stream)
-        }
-    }
-    
-    func publisher(_ publisher: OTPublisherKit, streamDestroyed stream: OTStream) {
-        if let subStream = subscriber?.stream, subStream.streamId == stream.streamId {
-            cleanupSubscriber()
-        }
-    }
-    
-    func publisher(_ publisher: OTPublisherKit, didFailWithError error: OTError) {
-        print("Publisher failed: \(error.localizedDescription)")
-    }
-}
-
-// MARK: - OTSubscriber delegate callbacks
-extension VideoChatViewController: OTSubscriberDelegate {
-    func subscriberDidConnect(toStream subscriberKit: OTSubscriberKit) {
-        if let subsView = subscriber?.view {
-            subsView.frame = subRect
-            subscriberContainer.addSubview(subsView)
-            cameraSession.stopRunning()
-            previewView.isHidden = true
-        }
-    }
-    
-    func subscriber(_ subscriber: OTSubscriberKit, didFailWithError error: OTError) {
-        print("Subscriber failed: \(error.localizedDescription)")
-    }
-}

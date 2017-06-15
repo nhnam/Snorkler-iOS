@@ -5,7 +5,6 @@ PODS:
   - Crashlytics (3.8.4):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.11)
-  - Fakery (2.0.0)
   - Firebase/Auth (4.0.0):
     - Firebase/Core
     - FirebaseAuth (= 4.0.0)
@@ -51,13 +50,11 @@ PODS:
   - IJProgressView (0.1.0)
   - ImagePicker (2.1.1)
   - JCTagListView (1.0.2)
+  - JSQMessagesViewController (7.3.4):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
   - KeyboardMan (1.1.0)
   - OpenTok (2.11.1)
-  - Realm (2.7.0):
-    - Realm/Headers (= 2.7.0)
-  - Realm/Headers (2.7.0)
-  - RealmSwift (2.7.0):
-    - Realm (= 2.7.0)
   - SnapKit (3.2.0)
   - SwiftARGB (0.9.3)
   - SwiftDate (4.1.2)
@@ -76,7 +73,6 @@ DEPENDENCIES:
   - AlamofireImage (~> 3.2.0)
   - Crashlytics
   - Fabric
-  - Fakery (~> 2.0.0)
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -85,10 +81,9 @@ DEPENDENCIES:
   - IJProgressView (from `https://github.com/Isuru-Nanayakkara/IJProgressView.git`)
   - ImagePicker
   - JCTagListView
+  - JSQMessagesViewController (~> 7.3.4)
   - KeyboardMan
-  - OpenTok (~> 2.11.0)
-  - Realm
-  - RealmSwift
+  - OpenTok
   - SwiftARGB
   - SwiftDate (~> 4.0)
   - SwiftLocation
@@ -114,7 +109,6 @@ SPEC CHECKSUMS:
   AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
-  Fakery: 97b99c23937d2e025d9135c75e2b17351ccd5031
   Firebase: 284eea779b73fdff309791817da7c68bff8dd572
   FirebaseAnalytics: 6f08e746f7d66f5452931bc2e822b5df9c66b64a
   FirebaseAuth: ebb6abcbabae00fc47446d690c19ce68d8484fde
@@ -128,10 +122,10 @@ SPEC CHECKSUMS:
   IJProgressView: 24ba8bade65ca7d500fc5c74c8d48e5cf2f3f246
   ImagePicker: fe4c699abb56ff03994fa98d8b02e3883ee118be
   JCTagListView: 963c9f5a867e2416e28bcf056e32c572082d5446
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KeyboardMan: 96e61167a0fb3a4e31662d41802a9dd920b6d097
   OpenTok: 71593edaae9c18284d4b46eb22a4a4fa69964d21
-  Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
-  RealmSwift: 6d06425d3900c86473c4f323bf6949b43fca22bc
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftARGB: 37a0aeaed8e99ed691e7e574af1ae3f85c731286
   SwiftDate: 2dfdebd4f67ae71c9c3e2413ee3c56947f302858
@@ -144,6 +138,6 @@ SPEC CHECKSUMS:
   Validator: b1793fbfd0046097551d0edd18e2c30792d69ef5
   Xia: 5664f5bbd7f16cc490c38edb30614289c02d203b
 
-PODFILE CHECKSUM: 7e636aa7dfe2d91226d79154ebca71132b794451
+PODFILE CHECKSUM: c075d2c59d2ad1c073b98e246d37f9b58da0c4bb
 
 COCOAPODS: 1.2.1

@@ -113,7 +113,7 @@ class AddUniversityViewController: UIViewController {
             
             self.hideLoading()
             
-            guard let resultJson = json as? JSON else { return }
+            guard let resultJson = json else { return }
             let interests:[JSON] = resultJson["schools"].arrayValue
             interests.forEach { itemJSON in
                 let item = School(schoolId: itemJSON["school_id"].stringValue, schoolName: itemJSON["school_name"].stringValue)

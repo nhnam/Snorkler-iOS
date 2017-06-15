@@ -66,9 +66,11 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func registerDidTouch(_ sender: Any) {
+        
     }
     
     @IBAction func loginFacebookDidTouch(_ sender: Any) {
+        
     }
 
     @IBAction func forgotPasswordDidTouch(_ sender: Any) {
@@ -91,6 +93,8 @@ class LoginViewController: UIViewController {
         ApiHelper.signin(email:emailField.text ?? "", password:passwordField.text ?? "", onsuccess: { [weak self] (result) in
             self?.hideLoading()
             guard let json = result else { return }
+            
+            print("User:\n\(json)")
             
             AppSession.shared.userInfo = UserInfo(firstname: json["data"]["firstname"].string ?? "",
                                                   lastname: json["data"]["lastname"].string ?? "",

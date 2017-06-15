@@ -14,16 +14,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Fakery-Faker.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Fakery.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>GPUImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -59,22 +49,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JSQMessagesViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>JSQSystemSoundPlayer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>KeyboardMan.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-Snorkler.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Realm.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>RealmSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -137,7 +127,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>00011BEC30A76A9175B821B9104B7B3D</key>
+		<key>06E3F71ACC26904FBAF8101C5CF06944</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,27 +137,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0FD447E8311A7177D31BCA6620A6A208</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1697609D95A6E40A27D29CB2D9AF33C5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>178660B8290485DE380C5B410D58C69E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>199F15D90A1723C1C65762905FB85192</key>
+		<key>221E8AB614DCCB2DB7B6233C13FA6BDC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,12 +157,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>32A8DA1CA6EDC08C68597938E62C6398</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>33C80F92A668BFD4A8163DD472F1B265</key>
+		<key>39849666E63ED03BB03B4DCDCFE21909</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -197,17 +167,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>481A2DE87CCC53B450C75302063F2CB1</key>
+		<key>4DED3496FFEA4AE34CB8A57C75B47E45</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6097A3A2FC772EBB9CC8712E5E93D239</key>
+		<key>5D10672A3512BD94198CE1CDDDE17329</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>79A0F1E0EDBD2E1D3EAA8453C58D4383</key>
+		<key>7F9EB2D224E67D2C1A863BCC43902A6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -227,12 +197,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BC2454EB4E5496CB27F3BC13F4D61A49</key>
+		<key>A9969EBE164C2B95993E18033F5ABB4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BFC9642579914750D819367677AE6A37</key>
+		<key>A9F9E028A7DA4D26AECD8280D3B48E21</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B542F09FA3E0B3E1A5552B9687E61044</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BA8EBF7783384ADF922CA6951B4AA33C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -242,27 +222,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C498EBDBE0A2EF6EF719EC8718286AD6</key>
+		<key>C7DCF2B547F7871B9BFD74DE93B0E173</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E1D14C45BEAA74F1494C66623582DA5F</key>
+		<key>D0581AF7BF4A6DA140D280B19ECC7BFF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E6C66A1A1A9BF91CDBBB1207261BD6FD</key>
+		<key>EB938CE380957D17BE43B3D45ACB425E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EDF93C92951F774268DF571AFB602950</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>FB2B4EB11A07BB278631A5BDA0953EA6</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FCAFE9C6CDFAABC04FDE1A80BBCBA57E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

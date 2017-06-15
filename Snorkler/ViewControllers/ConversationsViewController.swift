@@ -15,7 +15,7 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     lazy var email:String = {
         return AppSession.shared.userInfo?.email ?? ""
     }()
-    internal var items = [Conversation]()
+    
     internal var selectedUser: User?
     
     @IBOutlet weak var tableView: UITableView!
@@ -103,19 +103,6 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
                 print("Downloaded all users")
             })
         }
-//        
-//        Conversation.showConversations { (conversations) in
-//            self.items = conversations
-//            self.items.sort{ $0.lastMessage.timestamp > $1.lastMessage.timestamp }
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//                for conversation in self.items {
-//                    if conversation.lastMessage.isRead == false {
-//                        break
-//                    }
-//                }
-//            }
-//        }
     }
 
     //MARK: Delegates

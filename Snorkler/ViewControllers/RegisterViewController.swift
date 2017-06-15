@@ -57,13 +57,14 @@ class RegisterViewController: UIViewController {
             defer {
                 
             }
-            guard let json = result as? JSON else { return }
+            guard let json = result else { return }
             
-            AppSession.shared.userInfo = UserInfo(firstname: json["data"]["firstname"].string ?? "",
-                                                  lastname: json["data"]["lastname"].string ?? "",
+            AppSession.shared.userInfo = UserInfo(firstname: json["data"]["firstname"].stringValue,
+                                                  lastname: json["data"]["lastname"].stringValue,
                                                   token: "",
-                                                  memberId: json["data"]["member_id"].string ?? "",
-                                                  email: json["data"]["email"].string ?? self?.emailField.text ?? "", dp: json["data"]["dp"].string ?? "")
+                                                  memberId: json["data"]["member_id"].stringValue,
+                                                  email: json["data"]["email"].stringValue,
+                                                  dp: json["data"]["dp"].stringValue)
             
             if( AppSession.shared.userInfo?.memberId != nil && AppSession.shared.userInfo?.memberId != "") {
                 self?.performSegue(withIdentifier: "toAddInterest", sender: self)

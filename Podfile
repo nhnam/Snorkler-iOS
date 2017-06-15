@@ -1,22 +1,20 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '9.0'
+inhibit_all_warnings!
 
 target 'Snorkler' do
   use_frameworks!
 
-  pod 'OpenTok', '~> 2.11.0'
+  pod 'OpenTok'
   pod 'Alamofire', '~> 4.4.0'
   pod 'AlamofireImage', '~> 3.2.0'
   pod 'SwiftyJSON', '~> 3.1.4'
-  pod 'Fakery', '~> 2.0.0'
   pod 'TPKeyboardAvoiding', '~> 1.3.1'
   pod 'GPUImage'
   pod 'SwiftARGB'
   pod 'JCTagListView'
   pod 'UIImage-Color', '~> 1.1.1'
   pod 'Validator', '~> 2.1.1'
-  pod 'Realm'
-  pod 'RealmSwift'
   pod 'SwiftLocation'
   pod 'UIColor-Hex', '~> 1.3.4'
   pod 'UDatePicker'
@@ -31,4 +29,5 @@ target 'Snorkler' do
   pod 'Xia'
   pod 'Fabric'
   pod 'Crashlytics'
+  pod 'JSQMessagesViewController', '~> 7.3.4'
 end

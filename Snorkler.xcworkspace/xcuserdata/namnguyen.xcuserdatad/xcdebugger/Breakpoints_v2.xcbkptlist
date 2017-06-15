@@ -6,7 +6,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             scope = "0"
@@ -19,62 +19,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Snorkler/Helpers/ApiHelper.swift"
-            timestampString = "519033188.942398"
+            filePath = "Snorkler/ViewControllers/LoginViewController.swift"
+            timestampString = "519225915.169349"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
-            landmarkName = "updateProfilePicture(params:imageData:uploadProgress:onsuccess:onfailure:)"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Snorkler/Helpers/ApiHelper.swift"
-            timestampString = "519033188.942398"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "updateProfilePicture(params:imageData:uploadProgress:onsuccess:onfailure:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static Snorkler.ApiHelper.(updateProfilePicture (params : Swift.Dictionary&lt;Swift.String, Any&gt;, imageData : Foundation.Data, uploadProgress : (Swift.Double) -&gt; (), onsuccess : (Swift.Optional&lt;SwiftyJSON.JSON&gt;) -&gt; (), onfailure : (Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()).(closure #2)"
-                  moduleName = "Snorkler"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/namnguyen/Projects/Snorkler/Snorkler-iOS/Snorkler/Helpers/ApiHelper.swift"
-                  timestampString = "519032928.369262"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "201"
-                  endingLineNumber = "201"
-                  offsetFromSymbolStart = "228">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static Snorkler.ApiHelper.(updateProfilePicture (params : Swift.Dictionary&lt;Swift.String, Any&gt;, imageData : Foundation.Data, uploadProgress : (Swift.Double) -&gt; (), onsuccess : (Swift.Optional&lt;SwiftyJSON.JSON&gt;) -&gt; (), onfailure : (Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()).(closure #2).(closure #1)"
-                  moduleName = "Snorkler"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/namnguyen/Projects/Snorkler/Snorkler-iOS/Snorkler/Helpers/ApiHelper.swift"
-                  timestampString = "519032928.370685"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "202"
-                  endingLineNumber = "202"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

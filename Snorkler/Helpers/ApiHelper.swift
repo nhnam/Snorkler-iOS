@@ -47,8 +47,8 @@ class ApiHelper: Any {
      */
     
     class func validateParam(_ params:[String: Any], forApiType type:ApiType) -> (Bool, String?){
-        var isDataValid = true
-        var errMessage:String? = nil
+        let isDataValid = true
+        let errMessage:String? = nil
         switch type {
         case .signin:
             break
@@ -208,5 +208,5 @@ class ApiHelper: Any {
         Alamofire.request(ApiHost + apiGetOnlineUsers, method: .get, parameters: nil).validate().responseJSON { response in
             resultClasssify(with: response, forType: .getOnlineUsers, onsuccess: success, onfailure: fail)
         }
-    }
+    }    
 }

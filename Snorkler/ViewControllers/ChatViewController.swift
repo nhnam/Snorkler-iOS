@@ -11,25 +11,24 @@ import Firebase
 import KeyboardMan
 import AudioToolbox
 import Xia
+import JSQMessagesViewController
 
-class ChatViewController: UIViewController{
+final class ChatViewController: JSQMessagesViewController{
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var inputContainer: UIView!
-    @IBOutlet weak var inputField: UITextField!
-    @IBOutlet weak var sendButton: UIButton!
-    @IBOutlet weak var tableMarginBottom: NSLayoutConstraint!
-    let defaultBottomConstant: CGFloat = 53.0
+    // MARK: Properties
+    var messages:[JSQMessage] = [] // messages is an array to store the various instances of JSQMessage
+    var outgoingBubbleImageView: JSQMessagesBubbleImage!
+    var incomingBubbleImageView: JSQMessagesBubbleImage!
     
     private lazy var channelRef: DatabaseReference = Database.database().reference().child("channels")
     private lazy var messageRef: DatabaseReference = self.channelRef.child("messages")
+    
     private var newMessageRefHandle: DatabaseHandle?
     
-    var messages:[Message] = []
     var currentUser: User? {
         didSet{ print("User set:\(String(describing: currentUser?.email))") }
     }
-    var senderId = Auth.auth().currentUser?.uid {
+    var currentUserId = Auth.auth().currentUser?.uid {
         didSet { print("SenderId: \(String(describing: senderId))") }
     }
     var senderName = AppSession.shared.userInfo?.firstname
@@ -45,33 +44,19 @@ class ChatViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.estimatedRowHeight = 50
-        self.tableView.separatorStyle = .none
-        self.inputField.delegate = self
-        self.inputField.layer.borderWidth = 2
-        self.inputField.layer.borderColor = GlobalVariables.purple.cgColor
-        self.inputField.layer.cornerRadius = 3.0
-        self.inputField.clipsToBounds =  true
-        let view = UIView(frame: CGRect(x:0,y:0,width:30,height:30))
-        self.inputField.leftViewMode = .always
-        self.inputField.leftView = view
-        
         self.title = AppSession.shared.currentRoom
-        
-        if currentUser != nil {
-            fetchData()
-        } else {
-            guard let email = AppSession.shared.userInfo?.email else { return }
-            Auth.auth().signIn(withEmail: email, password: "123456", completion: { (user, error) in
-                if let er = error {
-                    print("Signin Error: \(er.localizedDescription)")
-                    return
-                }
-                print ("Signed in chat as \(email)")
-                self.senderId = Auth.auth().currentUser?.uid
-            })
+        self.getUserInfo { [unowned self] in
+            _ = self.isObserveredMessages
         }
-        _ = isObserveredMessages
+    }
+    
+    func getUserInfo(_ done:@escaping ()->()) {
+        guard let email = AppSession.shared.userInfo?.email else { return }
+        Auth.auth().signIn(withEmail: email, password: "123456", completion: { (user, error) in
+            ErrorHelper.apiError(error)
+            self.senderId = Auth.auth().currentUser?.uid
+            done()
+        })
     }
     
     deinit {
@@ -87,69 +72,43 @@ class ChatViewController: UIViewController{
     
     func configKeyboardObserver() {
         keyboardMan.animateWhenKeyboardAppear = { [weak self] appearPostIndex, keyboardHeight, keyboardHeightIncrement in
-            self?.tableMarginBottom.constant = keyboardHeight + ( self?.defaultBottomConstant ?? 0.0 )
             self?.view.layoutIfNeeded()
         }
         
         keyboardMan.animateWhenKeyboardDisappear = { [weak self] keyboardHeight in
-            self?.tableMarginBottom.constant = self?.defaultBottomConstant ?? 0.0
             self?.view.layoutIfNeeded()
-        }
-    }
-    
-
-    func fetchData() {
-        guard let userid = self.currentUser?.id else { return }
-//        Message.downloadAllMessages(forUserID: userid, completion: {[unowned self] (message) in
-//            // self.messages.append(message)
-//            self.finishReceivingMessage()
-//        })
-        Message.markMessagesRead(forUserID: userid)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if inputField.canResignFirstResponder {
-            inputField.resignFirstResponder()
         }
     }
 
     func composeMessage(type: MessageType, content: String)  {
         
-        guard let userid = senderId else { return }
-        
-        let message = Message.init(type: type, content: content, owner: .sender, timestamp: Int(Date().timeIntervalSince1970), isRead: false, name: senderName)
-        
-        Message.send(message: message, toID: userid, completion: { (_) in })
+        guard let userid = currentUserId else { return }
+        guard let name = senderName else { return }
         
         let itemRef = messageRef.childByAutoId()
         let messageItem:[String:String] = [
-            "senderId": senderId!,
-            "senderName": senderName!,
+            "senderId": userid,
+            "senderName": name,
             "text": content]
         
         itemRef.setValue(messageItem) // 3
     }
     
-    @IBAction func didTouchSend(_ sender: Any) {
-        if let text = inputField.text {
-            if text.characters.count > 0 {
-                self.composeMessage(type: .text, content: text)
-                inputField.text = ""
-            }
-        }
-    }
-    
     func observeMessages() {
+        // No avatars
+        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
+        
         messageRef = channelRef.child("messages")
         let messageQuery = messageRef.queryLimited(toLast:25)
         newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             guard let messageData:[String:String] = snapshot.value as? [String : String] else { return }
+            print("📩 \(messageData)")
             if let id:String = messageData["senderId"],
-                let name:String = messageData["senderName"],
                 let text:String = messageData["text"],
                 text.characters.count > 0 {
-                self.addMessage(withId: id, name: name, text: text)
+                self.addMessage(id, text: text)
+                // Inform JSQMessagesViewController that a message has been received.
                 self.finishReceivingMessage()
             } else {
                 print("Error! Could not decode message data")
@@ -158,76 +117,73 @@ class ChatViewController: UIViewController{
         })
     }
     
-    private func addMessage(withId userId:String, name senderName:String, text content: String) {
-        let message = Message.init(type: .text, content: content, owner: (userId == senderId) ? .sender : .receiver, timestamp: Int(Date().timeIntervalSince1970), isRead: false, name: senderName)
-        messages.append(message)
+    // MARK: - Create Message
+    // This helper method creates a new JSQMessage with a blank displayName and adds it to the data source.
+    func addMessage(_ id: String, text: String) {
+        let message = JSQMessage(senderId: id, displayName: "", text: text)
+        messages.append(message!)
     }
     
-    private func finishReceivingMessage() {
-        self.messages.sort{ $0.timestamp < $1.timestamp }
-        DispatchQueue.main.async {
-            if !self.messages.isEmpty {
-                self.tableView.reloadData()
-                self.tableView.scrollToRow(at: IndexPath.init(row: self.messages.count - 1, section: 0), at: .bottom, animated: false)
-            }
-        }
-        self.playSound()
+    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+        
+        // Using childByAutoId(), you create a child reference with a unique key.
+        let itemRef = messageRef.childByAutoId()
+        // Create a dictionary to represent the message. A [String: AnyObject] works as a JSON-like object
+        let messageItem = ["text": text as String, "senderId": senderId as String]
+        
+        itemRef.setValue(messageItem) // Save the value at the new child location.
+        
+        // Play the canonical “message sent” sound.
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        
+        // Complete the “send” action and reset the input toolbar to empty.
+        finishSendingMessage()
     }
-    
-    func playSound()  {
-        var soundURL: NSURL?
-        var soundID:SystemSoundID = 0
-        let filePath = Bundle.main.path(forResource: "newMessage", ofType: "wav")
-        soundURL = NSURL(fileURLWithPath: filePath!)
-        AudioServicesCreateSystemSoundID(soundURL!, &soundID)
-        AudioServicesPlaySystemSound(soundID)
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
-extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension ChatViewController {
+    // MARK: JSQMessagesCollectionView Datasource
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
+        return messages[indexPath.item]
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.001
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch messages[indexPath.row].owner {
-        case .receiver:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "receiver_cell", for: indexPath) as! ReceiverCell
-            cell.clearCellData()
-            cell.profilePic.image = #imageLiteral(resourceName: "profile pic")
-            cell.message.text = messages[indexPath.row].content as? String
-            cell.name.text = messages[indexPath.row].name
-            return cell
-        case .sender:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "sender_cell", for: indexPath) as! SenderCell
-            cell.clearCellData()
-            cell.profilePic.image = #imageLiteral(resourceName: "contact-icon")
-            cell.message.text = messages[indexPath.row].content as? String
-            cell.name.text = messages[indexPath.row].name
-            return cell
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
+        
+        let message = messages[indexPath.item] // retrieve the message based on the NSIndexPath item.
+        if message.senderId == senderId { // Check if the message was sent by the local user. If so, return the outgoing image view.
+            return outgoingBubbleImageView
+        } else {  // If the message was not sent by the local user, return the incoming image view.
+            return incomingBubbleImageView
         }
-
+    }
+    
+    // set text color based on who is sending the messages
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
+        
+        let message = messages[(indexPath as NSIndexPath).item]
+        
+        if message.senderId == senderId {
+            cell.textView!.textColor = UIColor.white
+        } else {
+            cell.textView?.textColor = UIColor.black
+        }
+        
+        return cell
+    }
+    
+    
+    
+    // remove avatar support and close the gap where the avatars would normally get displayed.
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
+        return nil
     }
 }
+
 
 extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

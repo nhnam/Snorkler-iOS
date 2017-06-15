@@ -18,6 +18,7 @@ class User: NSObject {
     let id: String
     var profilePic: UIImage?
     var avatarUrl:String?
+    var address: String?
     //MARK: Methods
     class func registerUser(withName: String, email: String, password: String, profilePic: UIImage, completion: @escaping (Bool) -> ()) {
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in

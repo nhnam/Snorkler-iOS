@@ -37,9 +37,8 @@ class AddInterestViewController: UIViewController {
     private func getTrendingInterests() {
         showLoading()
         ApiHelper.getTrendingInterests(onsuccess: { result in
-            print(result)
             self.hideLoading()
-            guard let resultJson = result as? JSON else { return }
+            guard let resultJson = result else { return }
             let interests:[JSON] = resultJson["interests"].arrayValue
             interests.forEach { itemJSON in
                 let item = Interest(interestId: itemJSON["interest_id"].stringValue,
@@ -50,7 +49,6 @@ class AddInterestViewController: UIViewController {
                 self.setupTags()
             }
         }, onfailure: { err in
-            print("\(String(describing: err))")
             self.hideLoading()
         })
     }

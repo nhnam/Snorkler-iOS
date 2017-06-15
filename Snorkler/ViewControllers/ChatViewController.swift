@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import Firebase
 import KeyboardMan
 import AudioToolbox
 import Xia
 import JSQMessagesViewController
+import Firebase
 
 final class ChatViewController: JSQMessagesViewController{
     
@@ -42,12 +42,20 @@ final class ChatViewController: JSQMessagesViewController{
         return true
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = AppSession.shared.currentRoom
+        self.setup()
+    }
+
+    func setup() {
         self.getUserInfo { [unowned self] in
             _ = self.isObserveredMessages
         }
+        senderId = AppSession.shared.userInfo?.memberId ?? ""
+        senderDisplayName = AppSession.shared.userInfo?.firstname ?? ""
+        setupBubbles()
     }
     
     func getUserInfo(_ done:@escaping ()->()) {
@@ -57,6 +65,13 @@ final class ChatViewController: JSQMessagesViewController{
             self.senderId = Auth.auth().currentUser?.uid
             done()
         })
+    }
+    
+    fileprivate func setupBubbles() {
+        // JSQMessagesBubbleImageFactory has methods that create the images for the chat bubbles. There’s even a category provided by JSQMessagesViewController that creates the message bubble colors used in the native Messages app.
+        let factory = JSQMessagesBubbleImageFactory()
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
     }
     
     deinit {

@@ -11,7 +11,6 @@ import OpenTok
 import Alamofire
 import AVFoundation
 import GPUImage
-import Firebase
 import SwiftyJSON
 
 let video_server = "https://face2faceserver.herokuapp.com"

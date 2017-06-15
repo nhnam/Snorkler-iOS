@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 import SwiftLocation
 
-class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController {
 
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -19,16 +19,32 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var forgotPasswordButton: UIButton!
     
     override func viewDidLoad() {
+        print("\(#function)")
         super.viewDidLoad()
-        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         emailField.attributedPlaceholder = NSAttributedString(string: "email@domain.com", attributes: [NSForegroundColorAttributeName : UIColor.white.withAlphaComponent(0.7)])
         passwordField.attributedPlaceholder = NSAttributedString(string: "******", attributes: [NSForegroundColorAttributeName : UIColor.white.withAlphaComponent(0.7)])
         loadLocation()
-        
         if let email = AppSession.getCache("email") {
             emailField.text = email
         }
+    }
+    
+    
+    override func loadView() {
+        print("\(#function)")
+        super.loadView()
+    }
+    
+    
+    override func viewWillLayoutSubviews() {
+        print("\(#function)")
+        super.viewWillLayoutSubviews()
+    }
+    
+    override func awakeFromNib() {
+        print("\(#function)")
+        super.awakeFromNib()
     }
     
     private func loadLocation() {
@@ -55,7 +71,7 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func registerDidTouch(_ sender: Any) {
-        
+        self.performSegue(withIdentifier: "toRegister", sender: self)
     }
     
     @IBAction func loginFacebookDidTouch(_ sender: Any) {
@@ -63,7 +79,7 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func forgotPasswordDidTouch(_ sender: Any) {
-    
+        self.performSegue(withIdentifier: "toForgotPassword", sender: self)
     }
     
     @IBAction func loginButtonDidTouch(_ sender: Any) {

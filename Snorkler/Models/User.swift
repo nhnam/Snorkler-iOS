@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import Firebase
 import SwiftyJSON
+import Firebase
 
 class User: NSObject {
     

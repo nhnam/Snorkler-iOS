@@ -36,7 +36,5 @@
 	<string>1:831605012870:ios:99e9a35d4e2f4f47</string>
 	<key>DATABASE_URL</key>
 	<string>https://face2facechat-9d751.firebaseio.com</string>
-	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
-	<true/>
 </dict>
 </plist>

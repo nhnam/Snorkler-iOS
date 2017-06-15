@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C4EE41FA1C90917E00B985AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4EE41F91C90917E00B985AB /* AppDelegate.swift */; };
-		C4EE41FF1C90917E00B985AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4EE41FD1C90917E00B985AB /* Main.storyboard */; };
 		C4EE42011C90917E00B985AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4EE42001C90917E00B985AB /* Assets.xcassets */; };
-		C4EE42041C90917E00B985AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4EE42021C90917E00B985AB /* LaunchScreen.storyboard */; };
+		D68C05454F29F87F6DB3E512 /* Pods_Snorkler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E678359D131BE551E22DD13D /* Pods_Snorkler.framework */; };
 		D80C17831ECAF8B4007FFB50 /* AddInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17821ECAF8B4007FFB50 /* AddInterestViewController.swift */; };
 		D80C17851ECAFD5B007FFB50 /* AddUniversityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17841ECAFD5B007FFB50 /* AddUniversityViewController.swift */; };
 		D80C17871ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80C17861ECAFD68007FFB50 /* AddAvatarPhotoViewController.swift */; };
@@ -43,6 +42,8 @@
 		D87DA39D1ECEB5F200F82D2F /* SchoolPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = D87DA39C1ECEB5F200F82D2F /* SchoolPicker.xib */; };
 		D89756441EF2DB6C00DF4B66 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D873DA791EF2914C00E24F4F /* AdSupport.framework */; };
 		D89756461EF2DE9900DF4B66 /* SNNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89756451EF2DE9900DF4B66 /* SNNavigationController.swift */; };
+		D89756471EF2E29C00DF4B66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4EE41FD1C90917E00B985AB /* Main.storyboard */; };
+		D89756481EF2E29C00DF4B66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4EE42021C90917E00B985AB /* LaunchScreen.storyboard */; };
 		D89FE53A1ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89FE5391ECEFAFB00A0FBAB /* ForgotPasswordViewController.swift */; };
 		D89FE53C1ECF31F000A0FBAB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D89FE53B1ECF31F000A0FBAB /* GoogleService-Info.plist */; };
 		D89FE5411ECF704300A0FBAB /* RearMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89FE5401ECF704300A0FBAB /* RearMenuViewController.swift */; };
@@ -107,6 +108,7 @@
 		D8B0BDDB1EC5715A006425A4 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		D8D5F2761EEFD74D00DDF4F5 /* FriendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		D8DA49831EF238D7006836F8 /* VideoChatController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoChatController.swift; sourceTree = "<group>"; };
+		E678359D131BE551E22DD13D /* Pods_Snorkler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snorkler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 			files = (
 				D89756441EF2DB6C00DF4B66 /* AdSupport.framework in Frameworks */,
 				D87B09E31EC4710B0037D279 /* CoreLocation.framework in Frameworks */,
+				D68C05454F29F87F6DB3E512 /* Pods_Snorkler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +131,7 @@
 				D873DA791EF2914C00E24F4F /* AdSupport.framework */,
 				D87B09E21EC4710B0037D279 /* CoreLocation.framework */,
 				D87B09E01EC471050037D279 /* MapKit.framework */,
+				E678359D131BE551E22DD13D /* Pods_Snorkler.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -330,13 +334,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D89756471EF2E29C00DF4B66 /* Main.storyboard in Resources */,
+				D89756481EF2E29C00DF4B66 /* LaunchScreen.storyboard in Resources */,
 				D8B0BDD81EC567F5006425A4 /* VideoChatViewController.xib in Resources */,
 				D87DA39D1ECEB5F200F82D2F /* SchoolPicker.xib in Resources */,
 				D85408F11ED6896C00900FB7 /* newMessage.wav in Resources */,
-				C4EE42041C90917E00B985AB /* LaunchScreen.storyboard in Resources */,
 				D87B09D21EC470F40037D279 /* ProximaNova-Light.otf in Resources */,
 				C4EE42011C90917E00B985AB /* Assets.xcassets in Resources */,
-				C4EE41FF1C90917E00B985AB /* Main.storyboard in Resources */,
 				D89FE53C1ECF31F000A0FBAB /* GoogleService-Info.plist in Resources */,
 				D87B09DD1EC470F40037D279 /* CustomCalloutView.xib in Resources */,
 				D87B09D31EC470F40037D279 /* ProximaNova-Thin.otf in Resources */,
@@ -388,7 +392,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 02bfb35b35cf8a8d432050b5b490bd19bd4f3544 8e85a2d60406ff4675ac4fc0005aa5ccb3307ebe5a0c703c7841f7d77a20699f";
+			shellScript = "#\"${PODS_ROOT}/Fabric/run\" 02bfb35b35cf8a8d432050b5b490bd19bd4f3544 8e85a2d60406ff4675ac4fc0005aa5ccb3307ebe5a0c703c7841f7d77a20699f";
 		};
 		FF1B7AA3DC7DA46F501A861D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -36,17 +36,6 @@ class LoginViewController: UIViewController {
             Location.getPlacemark(forLocation: location, success: { placemarks in
                 if let place = placemarks.first {
                     if let addressDict = place.addressDictionary {
-                        // Street
-                        // ZIP
-                        // Country
-                        // SubThoroughfare
-                        // State
-                        // Name
-                        // SubAdministrativeArea
-                        // Thoroughfare
-                        // FormattedAddressLines
-                        // CountryCode
-                        // SubLocality
                         let district:String = addressDict["SubAdministrativeArea"] as? String ?? ""
                         let city:String = addressDict["State"] as? String ?? ""
                         let country:String = addressDict["Country"] as? String ?? ""

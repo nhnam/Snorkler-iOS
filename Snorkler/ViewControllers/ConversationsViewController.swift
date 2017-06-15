@@ -88,9 +88,8 @@ class ConversationsViewController: UIViewController, UITableViewDelegate, UITabl
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is ChatViewController {
             let vc:ChatViewController = segue.destination as! ChatViewController
-            vc.currentUser = self.selectedUser
+            vc.targetUser = self.selectedUser
         }
-        
     }
 
 }

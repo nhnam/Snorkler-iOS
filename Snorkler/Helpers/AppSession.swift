@@ -40,7 +40,12 @@ class AppSession: Any {
         ApiHelper.getOnlineUsers(onsuccess: { (result) in
             if let json:JSON = result {
                 if let usersJson = json["users"].array {
-                    usersJson.forEach { onlineUsers.append(User(json: $0)) }
+                    usersJson.forEach {
+                        let user = User(json: $0)
+                        if user.id != AppSession.shared.userInfo?.memberId {
+                            onlineUsers.append(user)
+                        }
+                    }
                 }
             }
             done?(true)

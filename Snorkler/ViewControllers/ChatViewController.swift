@@ -25,11 +25,12 @@ final class ChatViewController: JSQMessagesViewController{
     
     private var newMessageRefHandle: DatabaseHandle?
     
-    var currentUser: User? {
-        didSet{ print("User set:\(String(describing: currentUser?.email))") }
+    var targetUser: User? {
+        didSet{ print("User set:\(String(describing: targetUser?.email))") }
     }
-    var currentUserId = Auth.auth().currentUser?.uid {
-        didSet { print("SenderId: \(String(describing: senderId))") }
+    
+    var currentUserId = AppSession.shared.userInfo?.memberId {
+        didSet { print("SenderId: \(String(describing: currentUserId))") }
     }
     var senderName = AppSession.shared.userInfo?.firstname
     
@@ -42,10 +43,25 @@ final class ChatViewController: JSQMessagesViewController{
         return true
     }()
     
+    lazy var senderAvatar:URL? = {
+        if let url =  AppSession.shared.userInfo?.dp {
+            return URL(string: url)!
+        } else {
+            return nil
+        }
+    }()
+    
+    lazy var targetAvatar:URL? = {
+        if let url = self.targetUser?.avatarUrl {
+            return URL(string: url)!
+        } else {
+            return nil
+        }
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = AppSession.shared.currentRoom
+        self.title = targetUser?.name
         self.setup()
     }
 
@@ -62,7 +78,6 @@ final class ChatViewController: JSQMessagesViewController{
         guard let email = AppSession.shared.userInfo?.email else { return }
         Auth.auth().signIn(withEmail: email, password: "123456", completion: { (user, error) in
             ErrorHelper.apiError(error)
-            self.senderId = Auth.auth().currentUser?.uid
             done()
         })
     }
@@ -111,9 +126,8 @@ final class ChatViewController: JSQMessagesViewController{
     
     func observeMessages() {
         // No avatars
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
-        
+        //collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        //collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         messageRef = channelRef.child("messages")
         let messageQuery = messageRef.queryLimited(toLast:25)
         newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
@@ -122,9 +136,10 @@ final class ChatViewController: JSQMessagesViewController{
             if let id:String = messageData["senderId"],
                 let text:String = messageData["text"],
                 text.characters.count > 0 {
-                self.addMessage(id, text: text)
-                // Inform JSQMessagesViewController that a message has been received.
-                self.finishReceivingMessage()
+                if (id == self.targetUser?.id || id == AppSession.shared.userInfo?.memberId) {
+                    self.addMessage(id, text: text)
+                    self.finishReceivingMessage()
+                }
             } else {
                 print("Error! Could not decode message data")
                 Xia.showWarning("Can't decode message.\n\(messageData)")
@@ -184,8 +199,14 @@ extension ChatViewController {
         
         if message.senderId == senderId {
             cell.textView!.textColor = UIColor.white
+            if let url = senderAvatar {
+                cell.avatarImageView.af_setImage(withURL: url)
+            }
         } else {
             cell.textView?.textColor = UIColor.black
+            if let url = senderAvatar {
+                cell.avatarImageView.af_setImage(withURL: url)
+            }
         }
         
         return cell

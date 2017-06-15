@@ -22,6 +22,7 @@ class FriendCell: UITableViewCell {
                 if let url = newUser.avatarUrl {
                     profilePic.af_setImage(withURL: URL(string:url)!)
                 }
+                locationLabel.text = newUser.email
             }
         }
     }
